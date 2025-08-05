@@ -38,7 +38,7 @@ const public_commands = {
     },
 
     [`${prefix}uptime`]: (user, message, bot, state) => bot.chat(`Uptime: ${state.get_uptime()}`),
-    [`${prefix}deaths`]: (user, message, bot, state) => bot.chat(`Bot ${state.deaths}, Global: ${state.global_deaths}`),
+    [`${prefix}deaths`]: (user, message, bot, state) => bot.chat(`Bot ${state.deaths}, Global: ${state.global_deaths}, vined_on_top: ${state.vined_on_top_deaths}, i_am_vined: ${state.i_am_vined_deaths}, Damix2131 ${state.damix_deaths}`),
     [`${prefix}health`]: (user, message, bot, state) => bot.chat(`Bot has ${bot.health.toFixed(1)} hearts`),
 
     [`${prefix}rape`]: (user, message, bot, state) => {
@@ -540,9 +540,28 @@ const public_commands = {
         const randomSize = state.sizes[Math.floor(Math.random() * state.sizes.length)];
         
         if (args && args.trim().length > 0) {
+            if (args === 'random') {
+                const players = Object.keys(bot.players);
+                args = state.random_element(players);
+            }
             bot.chat(`${args} has: ${randomSize}-cups`);
         } else {
             bot.chat(`${user} has: ${randomSize}-cups`);
+        }
+    },
+
+    [`${prefix}fetish`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}fetish `)[1];
+        const randomFetish = state.fetish_results[Math.floor(Math.random() * state.fetish_results.length)];
+        
+        if (args && args.trim().length > 0) {
+            if (args === 'random') {
+                const players = Object.keys(bot.players);
+                args = state.random_element(players);
+            }            
+            bot.chat(`${args}'s fetish is: ${randomFetish}`);
+        } else {
+            bot.chat(`${user}'s fetish is: ${randomFetish}`);
         }
     },
 
@@ -634,7 +653,7 @@ const public_commands = {
     },
 
     [`${prefix}stats`]: (user, message, bot, state) => {
-        bot.chat(`Bot uses: ${state.bot_uses}, Bot tips sent: ${state.bot_tips_sent}, Ads seen: ${state.ads_seen}, word "dupe" mentioned: ${state.dupe_mentioned}`)
+        bot.chat(`Bot uses: ${state.bot_uses}, Bot tips sent: ${state.bot_tips_sent}, Ads seen: ${state.ads_seen}, word "dupe" mentioned: ${state.dupe_mentioned}, public command: ${Object.keys(public_commands).length}`)
     },
 
     [`${prefix}weather`]: (user, message, bot, state) => {
@@ -684,6 +703,20 @@ const public_commands = {
             bot.chat(`[POLL] Poll has started!:`)
         }
     },*/
+    [`${prefix}count`]: (user, message, bot, state) => {
+        let args = parseInt(message.split(`${prefix}count `)[1]);
+
+        if (isNaN(args)) {
+            bot.chat("Please provide an valid number.")
+        }
+        if (args !== state.current_count) {
+            bot.chat(`Wrong number! Expected: ${state.current_count}. Resetting to 0.`);
+            state.current_count = 0;
+        } else {
+            state.current_count++
+            bot.chat(`Correct! Continue counting by running: -count ${state.current_count}`)
+        }
+    },
 
     [`${prefix}discord`]: (user, message, bot, state) => {
         bot.chat(`Official discord server of .22 - https://discord.gg/mjrDsGCV7F`)
