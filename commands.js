@@ -1,5 +1,4 @@
 // commands.js
-
 const prefix = "-";
 
 const public_commands = {
@@ -418,9 +417,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} diagnosed with ${result}`);
+            bot.chat(`${args} diagnosed with ${insult}`);
         } else {
-            bot.chat(`${user} diagnosed with ${result}`);
+            bot.chat(`${user} diagnosed with ${insult}`);
         }
     },
 
