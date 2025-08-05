@@ -474,7 +474,7 @@ const public_commands = {
     },
     [`${prefix}gender`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}gender `)[1];
-        const result = state.random_element(results);
+        const result = state.random_element(state.gender_results);
 
         if (args === 'random') {
             const players = Object.keys(bot.players);
