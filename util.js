@@ -31,6 +31,21 @@ function get_random_ip() {
     return `${a}.${b}.${c}.${d}`;
 }
 
+function get_kd(target, state) {
+    const hasKills = state.crystal_kills.hasOwnProperty(target);
+    const hasDeaths = state.crystal_deaths.hasOwnProperty(target);
+
+    if (hasKills || hasDeaths) {
+        const kills = state.crystal_kills[target] || 0;
+        const deaths = state.crystal_deaths[target] || 0;
+        const kd = deaths === 0 ? kills : (kills / deaths).toFixed(2);
+        
+        return `${target} has ${kills} kill${kills !== 1 ? 's' : ''} and ${deaths} death${deaths !== 1 ? 's' : ''}. KD: ${kd}`
+    } else {
+        return `Player ${target} has no recorded kills or deaths.`
+    }
+}
+
 function return_user(msg) {
     let no_rank_message = '';
     let get_username = '';
@@ -101,6 +116,7 @@ module.exports = {
     whitelisted_users,
     blacklist,
     checkSpam,
+    get_kd,
     spam_count,
     temp_blacklist,
     spam_offenses,
