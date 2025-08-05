@@ -1,10 +1,6 @@
 // events.js
 module.exports = function(bot, state) {
     const {
-        server_restart,
-        ads_seen,
-        dupe_mentioned,
-        random_element,
         spam_messages,
         blacklisted_messages,
         return_user,
@@ -21,11 +17,13 @@ module.exports = function(bot, state) {
         state.spawnedIn += 1;
 
         if (!state.tips_started) {
-            state.tips_started = true;
+            let tipIndex = 0;
 
             setInterval(() => {
-                const tip = random_element(spam_messages);
-                bot.chat(tip);
+                if (spam_messages.length === 0) return;
+
+                bot.chat(spam_messages[tipIndex]);
+                tipIndex = (tipIndex + 1) % spam_messages.length;
                 state.bot_tips_sent++;
             }, 180000); // every 3 minutes
         }
@@ -153,6 +151,18 @@ module.exports = function(bot, state) {
 
         if (message.includes("died") && !message.includes('»')) {
             state.global_deaths++;
+
+            if (message.includes('vined_on_top')) {
+                state.vined_on_top_deaths++;
+            }
+
+            if (message.includes('i_am_vined')) {
+                state.i_am_vined_deaths++;
+            }
+
+            if (message.includes('Damix2131')) {
+                state.damix_deaths++;
+            }
         }
 
         if (message.includes("using an end crystal") && !message.includes('»')) {
