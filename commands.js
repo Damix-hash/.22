@@ -417,9 +417,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} diagnosed with ${insult}`);
+            bot.chat(`${args} ${insult}`);
         } else {
-            bot.chat(`${user} diagnosed with ${insult}`);
+            bot.chat(`${user} ${insult}`);
         }
     },
 
@@ -453,6 +453,22 @@ const public_commands = {
             bot.chat(`${args} is ${percent}% cringe`);
         } else {
             bot.chat(`${user} is ${percent}% cringe`);
+        }
+    },
+
+    [`${prefix}gooner`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}gooner `)[1];
+        const percent = Math.floor(Math.random() * 101);
+
+        if (args === 'random') {
+            const players = Object.keys(bot.players);
+            args = state.random_element(players);
+        }
+
+        if (args && args.trim().length > 0) {
+            bot.chat(`${args} is ${percent}% gooner`);
+        } else {
+            bot.chat(`${user} is ${percent}% gooner`);
         }
     },
 
@@ -524,12 +540,9 @@ const public_commands = {
         const randomSize = state.sizes[Math.floor(Math.random() * state.sizes.length)];
         
         if (args && args.trim().length > 0) {
-            if (args.toLowerCase() === 'qbasty') {
-                percent = Math.floor(Math.random() * 31) + 70;
-            }
-            bot.chat(`${args} is ${percent}% turkish`);
+            bot.chat(`${args} has: ${randomSize}-cups`);
         } else {
-            bot.chat(`${user} is ${percent}% turkish`);
+            bot.chat(`${user} has: ${randomSize}-cups`);
         }
     },
 
