@@ -18,7 +18,8 @@ module.exports = function(bot, state) {
 
         if (!state.tips_started) {
             let tipIndex = 0;
-
+             state.tips_started = true
+            
             setInterval(() => {
                 if (spam_messages.length === 0) return;
 
@@ -220,3 +221,4 @@ module.exports = function(bot, state) {
         }
     });
 };
+
