@@ -456,6 +456,86 @@ const public_commands = {
         }
     },
 
+    [`${prefix}swedish`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}swedish `)[1];
+        const percent = Math.floor(Math.random() * 101);
+
+        if (args === 'random') {
+            const players = Object.keys(bot.players);
+            args = state.random_element(players);
+        }
+
+        if (args && args.trim().length > 0) {
+            bot.chat(`${args} is ${percent}% swedish`);
+        } else {
+            bot.chat(`${user} is ${percent}% swedish`);
+        }
+    },
+
+    [`${prefix}european`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}european `)[1];
+        const percent = Math.floor(Math.random() * 101);
+
+        if (args === 'random') {
+            const players = Object.keys(bot.players);
+            args = state.random_element(players);
+        }
+
+        if (args && args.trim().length > 0) {
+            bot.chat(`${args} is ${percent}% european`);
+        } else {
+            bot.chat(`${user} is ${percent}% european`);
+        }
+    },
+
+    [`${prefix}white`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}european `)[1];
+        const percent = Math.floor(Math.random() * 101);
+
+        if (args === 'random') {
+            const players = Object.keys(bot.players);
+            args = state.random_element(players);
+        }
+
+        if (args && args.trim().length > 0) {
+            bot.chat(`${args} is ${percent}% white`);
+        } else {
+            bot.chat(`${user} is ${percent}% white`);
+        }
+    },
+
+    [`${prefix}aryan`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}aryan `)[1];
+        const percent = Math.floor(Math.random() * 101);
+
+        if (args === 'random') {
+            const players = Object.keys(bot.players);
+            args = state.random_element(players);
+        }
+
+        if (args && args.trim().length > 0) {
+            bot.chat(`${args} is ${percent}% aryan`);
+        } else {
+            bot.chat(`${user} is ${percent}% aryan`);
+        }
+    },
+
+    [`${prefix}nazi`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}aryan `)[1];
+        const percent = Math.floor(Math.random() * 101);
+
+        if (args === 'random') {
+            const players = Object.keys(bot.players);
+            args = state.random_element(players);
+        }
+
+        if (args && args.trim().length > 0) {
+            bot.chat(`${args} is ${percent}% nazi`);
+        } else {
+            bot.chat(`${user} is ${percent}% nazi`);
+        }
+    },
+
     [`${prefix}gooner`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}gooner `)[1];
         const percent = Math.floor(Math.random() * 101);
