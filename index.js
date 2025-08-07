@@ -65,6 +65,9 @@ function startup() {
         checkSpam: utils.checkSpam,
         blacklist: utils.blacklist,
         get_kd: utils.get_kd,
+        qbasty: [
+            "DUPES ARE GAY"
+        ],
         roasts: [
             "Your birth certificate is a griefing report.", "You're why the `/kill` command exists.",
             "Even Void wouldn't want to touch you.", "You look like a lag spike made human.",
@@ -249,4 +252,5 @@ function startup() {
 }
 
 startup();
+
 
