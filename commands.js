@@ -726,7 +726,6 @@ const public_commands = {
             bot.chat(`Server will restart in approximately: ${state.server_restart} seconds.`)
             counting = true
         } else if (counting && state.server_restart === 0) {
-            counting = false
             // bot.chat("Countdown is 0, but server didn't restart, did it?")
         } else {
             bot.chat("Server didn't announce when server restarts.")
@@ -739,9 +738,9 @@ const public_commands = {
         
         if (args === 'random') args = state.random_element(Object.keys(bot.players));
         if (args && args.trim()) {
-            bot.chat(`${args} is ${percent}% paranoid`);
+            bot.chat(`${args} is ${percent}% paranoid 😨`);
         } else {
-            bot.chat(`${user} is ${percent}% paranoid`);
+            bot.chat(`${user} is ${percent}% paranoid 😨`);
         }
     },
 
@@ -796,7 +795,6 @@ const public_commands = {
             bot.chat(`[POLL] Poll has started!:`)
         }
     },*/
-    
     [`${prefix}count`]: (user, message, bot, state) => {
         let args = parseInt(message.split(`${prefix}count `)[1]);
 
@@ -850,6 +848,14 @@ const public_commands = {
 
         let avg = (total / count).toFixed(1);
         bot.chat(`Avg Server Ping: ${avg}ms`);
+    },
+
+    [`${prefix}longestcd`]: (user, message, bot, state) => {
+        if (state.longest_cooldown) {
+            bot.chat(`Longest cooldown so far: ${state.longest_cooldown} seconds.`);
+        } else {
+            bot.chat("No cooldowns recorded yet.");
+        }
     },
 
     [`${prefix}discord`]: (user, message, bot, state) => {
