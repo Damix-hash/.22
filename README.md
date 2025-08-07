@@ -1,5 +1,154 @@
-# .22
+Understood! I’ve toned down the emojis for professionalism and added the API badges you provided. Also, split the commands clearly into **Public** and **Admin** sections with your exact admin commands included.
 
-.22 is an utility bot for anarchy servers, hosted only for 6b6t.org
+Here’s the updated README with live API badges and clean styling:
 
-Credits to ryk_cbaool for improving the code <3
+---
+
+# .22 — Anarchy Utility Bot for Minecraft
+
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/)
+[![Mineflayer](https://img.shields.io/badge/Mineflayer-Library-blue?logo=minecraft)](https://github.com/PrismarineJS/mineflayer)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey)](#license)
+
+### Server Status (last 24h):
+
+![Uptime](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/uptimes/24h/badge.svg)
+![Response Time](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/response-times/24h/badge.svg)
+![Health](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/health/badge.svg)
+
+`.22` is a feature-rich Mineflayer bot designed for chaotic Minecraft servers like **6b6t.org**.
+It offers server stats, utilities, fun commands, and admin tools — all while avoiding coordinate leaks.
+
+---
+
+## Quick Links
+
+* [Features](#features)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Commands](#commands)
+* [Admin Tools](#admin-tools)
+* [Contributing](#contributing)
+* [License](#license)
+
+---
+
+## Features
+
+* Real-time server stats: TPS, player joins/quits, uptime, ping
+* Utilities: polls, love meter, 8-ball, roll, flip
+* Event tracking: chat cooldowns, kill/death stats
+* Admin commands: whitelist management, remote execution
+* Zero coordinate usage for safe base operation
+
+---
+
+## Installation
+
+```bash
+git clone https://github.com/Damix-hash/.22.git
+cd .22
+npm install
+```
+
+---
+
+## Usage
+
+1. Set environment variables:
+
+```bash
+export MC_EMAIL="your_email@example.com"
+export MC_PASSWORD="your_password"
+```
+
+2. Start the bot:
+
+```bash
+node index.js
+```
+
+3. The bot connects by default to `eu.6b6t.org` (changeable in `index.js`).
+
+---
+
+## Commands
+
+### Public Commands
+
+Prefix: `-`
+
+| Command       | Description                         |
+| ------------- | ----------------------------------- |
+| `help`        | Show paginated commands list        |
+| `topkills`    | Display top kill counts             |
+| `uptime`      | Show bot uptime                     |
+| `deaths`      | Show death count                    |
+| `health`      | Show bot health status              |
+| `restart`  | Shows when server will restart in seconds                      |
+| `kit`         | Request or list kits                |
+| `love`        | Love compatibility meter            |
+| `rate`        | Random rating of player/item        |
+| `stfu`        | Send playful “shut up” message      |
+| `screen`      | Capture bot’s screen (if supported) |
+| `8ball`       | Magic 8-ball answers                |
+| `roll`        | Roll a random number                |
+| `flip`        | Coin flip                           |
+| `choose`      | Pick randomly from choices          |
+| `playerlist`  | List online players                 |
+| `tps`         | Show server TPS                     |
+| `kd`          | Kill/death ratio                    |
+| `quote`       | Show random saved quote             |
+| `paranoia`    | Paranoia rating                     |
+| `stats`       | Show server/player stats            |
+| `weather`     | Minecraft weather status            |
+| `time`        | Minecraft world time                |
+| `count`       | Count events/messages               |
+| `ping`        | Show bot ping                       |
+| `playerjoins` | Show join count                     |
+| `playerquits` | Show quit count                     |
+| `avgping`     | Show average ping                   |
+| `longestcd`   | Longest chat cooldown recorded      |
+| `discord`     | Share Discord invite                |
+
+### Admin Commands
+
+> Whitelisted users only
+
+| Command    | Description                          |
+| ---------- | ------------------------------------ |
+| `debug`    | Output various debug info            |
+| `run`      | Execute a command remotely           |
+| `say`      | Make bot say a message (non-command) |
+| `welcomer` | Toggle join/quit greetings           |
+| `tempwl`   | Temporarily whitelist a player       |
+| `remwl`    | Remove a player from temp whitelist  |
+| `timeout`  | Mute the bot (removes keep\_alive)   |
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -m "Add feature"`
+4. Push: `git push origin feature-name`
+5. Open a Pull Request
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) file.
+
+---
+
+### Star & Support
+
+[![GitHub stars](https://img.shields.io/github/stars/Damix-hash/.22?style=social)](https://github.com/Damix-hash/.22/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Damix-hash/.22?style=social)](https://github.com/Damix-hash/.22/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/Damix-hash/.22)](https://github.com/Damix-hash/.22/issues)
+
+---
+
+Would you like me to generate a **dynamic GitHub Action workflow or badge updater** that fetches live server stats to keep these badges automatically up-to-date?
