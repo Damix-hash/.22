@@ -86,7 +86,6 @@ Prefix: `-`
 | `deaths`      | Show death count                    |
 | `health`      | Show bot health status              |
 | `restart`  | Shows when server will restart in seconds                      |
-| `kit`         | Request or list kits                |
 | `love`        | Love compatibility meter            |
 | `rate`        | Random rating of player/item        |
 | `stfu`        | Send playful “shut up” message      |
