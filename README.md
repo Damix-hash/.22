@@ -10,7 +10,7 @@ Here’s the updated README with live API badges and clean styling:
 [![Mineflayer](https://img.shields.io/badge/Mineflayer-Library-blue?logo=minecraft)](https://github.com/PrismarineJS/mineflayer)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey)](#license)
 
-### Server Status (last 24h):
+### Server Status (for play.6b6t.org - last 24h):
 
 ![Uptime](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/uptimes/24h/badge.svg)
 ![Response Time](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/response-times/24h/badge.svg)
