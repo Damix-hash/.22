@@ -85,22 +85,37 @@ function startup() {
         ],
         // blame chatgpt for fetish_results i just asked for ideas and he gave me the whole list - Damix2131
         fetish_results: [
-            "Feet", "Hands", "Thighs", "Latex", "Leather", "Futa", "Tentacles",
-            "Pregnancy", "Giantess", "Inflation", "NTR", "Femboys", "MILFs", 
-            "DILFs", "Lactation", "Slime girls", "BDSM", "Watersports", "Diapers (DL only)", 
-            "Plushophilia", "Clowns", "Stomping", "Public humiliation", "Uniforms", 
-            "Yandere roleplay", "Breathplay", "Yuri", "Yaoi", "Dom/sub dynamics", 
-            "Gloryholes", "Choking", "Voice kink", "ASMR kink", "Robots", "Monster girls",
-            "Cuckoldry", "Stockings", "Food play", "Objectification", "Age regression (non-sexual)",
-            "Bondage", "Wax play", "Sadism", "Masochism", "Edging", "Corruption kink", 
-            "Mind control (consensual fantasy)", "Pet play", "Praise kink", "Degradation kink",
-            "Exhibitionism", "Roleplay", "Nipple play", "Cosplay kink", 
-            "Gun kink", "Amputee attraction", "Goth attraction", "Mask kink", 
-            "Voice domination", "Tattoos", "Piercings", "Sensory deprivation", 
-            "Shibari (Japanese rope bondage)", "Electrostimulation", "Temperature play", 
-            "Breast worship", "Thigh worship", "Armpit fetish", "Hair pulling", 
-            "Face sitting", "Lingerie", "Corsets", "Heels", "Femdom", "Maledom"
-        ],
+            // Body part focused
+            "Feet", "Hands", "Thighs", "Butts", "Armpits", "Necks", "Ears", "Eyes", "Nipples", "Hair",
+        
+            // Clothing / aesthetic
+            "Latex", "Leather", "Stockings", "Corsets", "Lingerie", "Heels", "Uniforms", "Socks", "Pantyhose",
+            "Glasses", "Goth aesthetics", "Piercings", "Tattoos", "Mask kink", "Business suits", "Sweaters",
+        
+            // Roleplay / identity
+            "Futa", "Femboys", "Monster girls", "Slime girls", "Giantess", "Robots", "Pet play", "Yandere roleplay",
+            "Cosplay kink", "Age regression (non-sexual)", "Gender play", "Crossdressing", "Objectification",
+            "DILFs", "MILFs", "Clowns", "Nuns", "Maids", "Neko play", "Bunny girls", "Goblins", "Fairies",
+        
+            // Power dynamics / BDSM
+            "Dom/sub dynamics", "Bondage", "Sadism", "Masochism", "Choking", "Breathplay", "Wax play",
+            "Electrostimulation", "Shibari (Japanese rope bondage)", "Temperature play", "Sensory deprivation",
+            "Praise kink", "Degradation kink", "Slave", "Master", "Femdom", "Maledom", "Cuckoldry", "Public humiliation",
+        
+            // Fluids / body stuff
+            "Lactation", "Watersports", "Rimming", "Cumplay", "Sweat kink", "Scent kink", "Breast worship",
+            "Thigh worship", "Armpit fetish", "Throat-fucking", "Nipple play", "Face sitting",
+        
+            // Psychological / edgy themes
+            "Corruption kink", "Mind control (consensual fantasy)", "Hypnosis", "Brainwashing", "Petification",
+            "Exhibitionism", "Voyeurism", "Jealousy kink", "Stalking fantasy", "Possessiveness", "Fear play",
+            "Gun kink", "Knife kink", "Danger kink", "ASMR kink", "Voice kink", "Voice domination",
+        
+            // Paraphilias / fantasy
+            "Inflation", "Tentacles", "NTR", "Vore", "Breeding kink", "Impregnation kink", "Alien kink",
+            "Body modification", "Zombie attraction", "Monster transformation", "Amputee attraction",
+            "Food play", "Plushophilia", "Guro (non-visual)", "Size difference", "Stomping", "Giant robots"
+        ]
         gender_results: [
             "Male", "Female", "Attack Helicopter", "Goofy", "None", "Yes", "All of them"
         ],
@@ -233,3 +248,4 @@ function startup() {
 }
 
 startup();
+
