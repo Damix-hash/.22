@@ -458,7 +458,7 @@ const public_commands = {
 
     [`${prefix}swedish`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}swedish `)[1];
-        const percent = Math.floor(Math.random() * 101);
+        let percent = Math.floor(Math.random() * 101);
 
         if (args === 'random') {
             const players = Object.keys(bot.players);
@@ -726,9 +726,22 @@ const public_commands = {
             bot.chat(`Server will restart in approximately: ${state.server_restart} seconds.`)
             counting = true
         } else if (counting && state.server_restart === 0) {
+            counting = false
             // bot.chat("Countdown is 0, but server didn't restart, did it?")
         } else {
             bot.chat("Server didn't announce when server restarts.")
+        }
+    },
+
+    [`${prefix}paranoia`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}paranoia `)[1];
+        const percent = Math.floor(Math.random() * 101);
+        
+        if (args === 'random') args = state.random_element(Object.keys(bot.players));
+        if (args && args.trim()) {
+            bot.chat(`${args} is ${percent}% paranoid`);
+        } else {
+            bot.chat(`${user} is ${percent}% paranoid`);
         }
     },
 
@@ -783,6 +796,7 @@ const public_commands = {
             bot.chat(`[POLL] Poll has started!:`)
         }
     },*/
+    
     [`${prefix}count`]: (user, message, bot, state) => {
         let args = parseInt(message.split(`${prefix}count `)[1]);
 
@@ -796,6 +810,46 @@ const public_commands = {
             state.current_count++
             bot.chat(`Correct! Continue counting by running: -count ${state.current_count}`)
         }
+    },
+
+    [`${prefix}ping`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}ping `)[1];
+
+        if (args && args.trim().length > 0) {
+            if (args === 'random') {
+                const players = Object.keys(bot.players);
+                args = state.random_element(players);
+            }            
+            bot.chat(`${args}'s ping is: ${bot.players[args]?.ping}`);
+        } else {
+            bot.chat(`${user}'s ping is: ${bot.players[user]?.ping}`);
+        }
+    },
+
+    [`${prefix}playerjoins`]: (user, message, bot, state) => {
+        let newest_user = state.newest_player ? "Yes" : "No"
+
+        bot.chat(`Players joined logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'} (Is he new?: ${newest_user})`)
+    },
+
+    [`${prefix}playerquits`]: (user, message, bot, state) => {
+        bot.chat(`Players left logged: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`)
+    },
+
+    [`${prefix}avgping`]: (user, message, bot, state) => {
+        let total = 0;
+        let count = 0;
+
+        for (let name in bot.players) {
+            let ping = bot.players[name]?.ping;
+            if (typeof ping === 'number') {
+                total += ping;
+                count++
+            }
+        }
+
+        let avg = (total / count).toFixed(1);
+        bot.chat(`Avg Server Ping: ${avg}ms`);
     },
 
     [`${prefix}discord`]: (user, message, bot, state) => {
@@ -819,20 +873,97 @@ const admin_commands = {
     //   bot.chat(`Hotspot logger is now ${scan_hotspot ? "ON" : "OFF"}!`);
     // },
 
-    [`${prefix}debug`]: (user, command, bot, state) => {
-        //const loadedEntities = Object.keys(bot?.entities).length || 'none';
-        const loadedChunks = Object.keys(bot.world?.chunks || {}).length;
-        const openWindow = bot.currentWindow?.title || 'none';
-        const creativeMode = bot.game?.gameMode === 1 ? 'Yes' : 'No';
-        const flying = bot.entity?.onGround === false ? 'Yes' : 'No';
-        const heldItem = bot.heldItem ? bot.heldItem.name : 'None';
-        const botPing = bot.player?.ping
 
-        const memoryUsageMB = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+    [`${prefix}debug`]: (user, message, bot, state) => {
+        const args = message.split(`${prefix}debug `)[1];
 
-        const status = `Bot-Ping: ${botPing} | Spawned: ${state.spawnedIn} times | Loaded Chunks: ${loadedChunks} | Open GUI: ${openWindow} | Creative: ${creativeMode} | Flying: ${flying} | Held Item: ${heldItem} | Heap Memory: ${memoryUsageMB} MB`;
-        bot.chat(`/msg ${user} ${status}`);
+        if (args && args.trim().length > 0) {
+            const section = args.trim();
+
+            if (section === 'basic') {
+                const loadedChunks = Object.keys(bot.world?.chunks || {}).length || 'None';
+                const openWindow = bot.currentWindow?.title || 'None';
+                const heldItem = bot.heldItem?.name || 'None';
+                bot.chat(`/msg ${user} Chunks: ${loadedChunks} | Window: ${openWindow} | Held: ${heldItem}`);
+                console.log(bot.entities || 'None');
+                console.log(bot.tablist || 'None');
+                console.log(bot.players || 'None');
+            } else if (section === 'inventory') {
+                console.log(bot.inventory?.items() || 'None');
+            } else if (section === 'entityData') {
+                const entities = Object.values(bot.entities || {});
+                if (entities.length === 0) console.log('None');
+                else entities.forEach(e => {
+                    console.log(`Type: ${e.type || 'None'}, UUID: ${e.uuid || 'None'}, Vel: ${e.velocity || 'None'}`);
+                });
+            } else if (section === 'window') {
+                console.log(bot.currentWindow?.title || 'None');
+                console.log(bot.currentWindow?.slots || 'None');
+            } else if (section === 'pathfinder') {
+                console.log(bot.pathfinder?.goal || 'None');
+                console.log(bot.pathfinder?.path || 'None');
+            } else if (section === 'chatListeners') {
+                const listeners = bot._client?.listeners('chat') || [];
+                console.log(listeners.length > 0 ? listeners : 'None');
+            } else if (section === 'settings') {
+                const info = {
+                    username: bot.username || 'None',
+                    version: bot.version || 'None',
+                    health: bot.health || 'None',
+                    food: bot.food || 'None',
+                    xp: bot.experience || 'None',
+                    creative: bot.game?.gameMode === 1 ? 'Yes' : 'No',
+                    isAlive: bot.health > 0 ? 'Yes' : 'No'
+                };
+                const settingsMsg = Object.entries(info).map(([k, v]) => `${k}: ${v}`).join(' | ');
+                bot.chat(`/msg ${user} ${settingsMsg}`);
+            } else if (section === 'network') {
+                const ping = bot.player?.ping || 'None';
+                const latency = bot._client?.latency || 'None';
+                const brand = bot.serverBrand || 'None';
+                const stateClient = bot._client?.state || 'None';
+                bot.chat(`/msg ${user} Ping: ${ping} | Brand: ${brand} | Latency: ${latency} | State: ${stateClient}`);
+            } else if (section === 'skin') {
+                console.log('Skin Parts:', bot.player?.skinParts || 'None');
+            } else if (section === 'players') {
+                const list = Object.keys(bot.players || {});
+                bot.chat(`/msg ${user} Online Players (${list.length}): ${list.length > 0 ? list.join(', ') : 'None'}`);
+            } else if (section === 'plugins') {
+                console.log('Scoreboard Teams:', bot.scoreboard?.teams || 'None');
+                console.log('Plugin Channels:', bot._client?.pluginChannels || 'None');
+            } else if (section === 'state') {
+                bot.chat(`/msg ${user} Bot State: spawned ${state.spawnedIn || 'None'} times`);
+                console.log(state || 'None');
+            } else if (section === 'raw') {
+                console.log(bot || 'None');
+            } else if (section === 'tablist') {
+                console.log(bot.tablist || 'None');
+            } else if (section === 'sections' || section === 'list') {
+                const debugSections = [
+                    'basic', 'inventory', 'entityData', 'window', 'pathfinder',
+                    'chatListeners', 'settings', 'network', 'skin', 'players',
+                    'plugins', 'state', 'raw', 'tablist', 'sections'
+                ];                
+                bot.chat(`/msg ${user} Available debug sections: ${debugSections.join(', ')}`);
+            } else {
+                bot.chat(`/msg ${user} Unknown debug section: "${section}". Run ${prefix}debug sections.`);
+            }
+
+            console.log(`[DEBUG] ${user} ran debug "${section}"`);
+        } else {
+            const loadedChunks = Object.keys(bot.world?.chunks || {}).length || 'None';
+            const openWindow = bot.currentWindow?.title || 'None';
+            const creative = bot.game?.gameMode === 1 ? 'Yes' : 'No';
+            const flying = bot.entity?.onGround === false ? 'Yes' : 'No';
+            const held = bot.heldItem?.name || 'None';
+            const ping = bot.player?.ping || 'None';
+            const mem = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) || 'None';
+
+            const info = `Ping: ${ping} | Chunks: ${loadedChunks} | Window: ${openWindow} | Creative: ${creative} | Flying: ${flying} | Held: ${held} | Memory: ${mem}MB`;
+            bot.chat(`/msg ${user} ${info} — run "${prefix}debug (section)" for more.`);
+        }
     },
+
 
     [`${prefix}run`]: (user, message, bot, state) => {
         const message_to_run = message.split(`${prefix}run `)[1];
