@@ -149,6 +149,17 @@ module.exports = function(bot, state) {
             }
         }
 
+        // cooldown
+
+        if ((message.includes('Please wait') && message.includes('seconds before sending another message!')) && !message.includes('»')) {
+            let seconds_of_cooldown = parseInt(message.split('Please wait ')[1].split('seconds before sending another message!')[0].replace('s', ''))
+            state.cooldown = seconds_of_cooldown
+
+            if (!state.longest_cooldown || seconds_of_cooldown > state.longest_cooldown) {
+                state.longest_cooldown = seconds_of_cooldown;
+            }            
+        }
+
         if (message.includes("died") && !message.includes('»')) {
             state.global_deaths++;
 
