@@ -51,6 +51,7 @@ function startup() {
         vined_on_top_deaths: 0,
         i_am_vined_deaths: 0,
         damix_deaths: 0,
+        cooldown: 0,
         temp_blacklist: utils.temp_blacklist,
         spam_count: utils.spam_count,
         spam_offenses: utils.spam_offenses,
