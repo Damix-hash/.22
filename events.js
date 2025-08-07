@@ -1,6 +1,6 @@
 // events.js
 module.exports = function(bot, state) {
-    const {
+    let {
         spam_messages,
         blacklisted_messages,
         return_user,
@@ -10,16 +10,15 @@ module.exports = function(bot, state) {
         public_commands,
         responses,
         PASSWORD,
-        welcomer
+        welcomer,
     } = state;
 
     bot.on('spawn', () => {
         state.spawnedIn += 1;
 
-        if (!state.tips_started) {
+        if (!state.tips_started && state.spawnedIn == 2) {
             let tipIndex = 0;
-             state.tips_started = true
-            
+            state.tips_started = true
             setInterval(() => {
                 if (spam_messages.length === 0) return;
 
@@ -193,10 +192,28 @@ module.exports = function(bot, state) {
             }
         }
 
-        if (message.includes("joined") && !message.includes(bot.username) && welcomer ) {
-            const player = message.split("joined")[0].trim();
-            console.log(`Player ${player} currently joined.`);
-            bot.chat(`/whisper ${player} Welcome to 6b6t.org ${player}!`);
+        if (message.includes("joined") && !message.includes('»')) {
+            let joined_user = message.split(" joined")[0]
+
+            if (welcomer && !message.includes(bot.username)) {
+                const player = message.split("joined")[0].trim();
+                console.log(`Player ${player} currently joined.`);
+                bot.chat(`/whisper ${player} Welcome to 6b6t.org ${player}!`);
+            }
+            if (message.includes('the game for the first time')) {
+                state.newest_player = true
+            } else {
+                state.newest_player = false
+            }
+
+            state.recent_join = joined_user
+            state.joined++;
+        }
+
+        if (message.includes("quit") && !message.includes('»')) {
+            let quitted_user = message.split(" quit")[0]     
+            state.recent_quit = quitted_user       
+            state.quitted++;
         }
     });
 
@@ -221,4 +238,3 @@ module.exports = function(bot, state) {
         }
     });
 };
-
