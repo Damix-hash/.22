@@ -521,7 +521,7 @@ const public_commands = {
     },
 
     [`${prefix}nazi`]: (user, message, bot, state) => {
-        let args = message.split(`${prefix}aryan `)[1];
+        let args = message.split(`${prefix}nazi `)[1];
         const percent = Math.floor(Math.random() * 101);
 
         if (args === 'random') {
