@@ -115,7 +115,7 @@ function startup() {
             "Inflation", "Tentacles", "NTR", "Vore", "Breeding kink", "Impregnation kink", "Alien kink",
             "Body modification", "Zombie attraction", "Monster transformation", "Amputee attraction",
             "Food play", "Plushophilia", "Guro (non-visual)", "Size difference", "Stomping", "Giant robots"
-        ]
+        ],
         gender_results: [
             "Male", "Female", "Attack Helicopter", "Goofy", "None", "Yes", "All of them"
         ],
