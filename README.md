@@ -1,6 +1,3 @@
-Understood! I’ve toned down the emojis for professionalism and added the API badges you provided. Also, split the commands clearly into **Public** and **Admin** sections with your exact admin commands included.
-
-Here’s the updated README with live API badges and clean styling:
 
 ---
 
