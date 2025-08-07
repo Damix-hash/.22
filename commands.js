@@ -649,7 +649,6 @@ const public_commands = {
         let args = message.split(`${prefix}qbasty `)[1];
         const qbastyReply = state.random_element(state.qbasty);
             bot.chat(`${qbastyReply} -qbasty`);
-        }
     },
 
     [`${prefix}8ball`]: (user, message, bot, state) => {
@@ -1027,5 +1026,6 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
+
 
 
