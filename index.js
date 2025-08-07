@@ -98,7 +98,7 @@ function startup() {
         
             // Roleplay / identity
             "Futa", "Femboys", "Monster girls", "Slime girls", "Giantess", "Robots", "Pet play", "Yandere roleplay",
-            "Cosplay kink", "Age regression (non-sexual)", "Gender play", "Crossdressing", "Objectification",
+            "Cosplay kink", "Gender play", "Crossdressing", "Objectification",
             "DILFs", "MILFs", "Clowns", "Nuns", "Maids", "Neko play", "Bunny girls", "Goblins", "Fairies",
         
             // Power dynamics / BDSM
@@ -252,5 +252,6 @@ function startup() {
 }
 
 startup();
+
 
 
