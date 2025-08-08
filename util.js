@@ -22,6 +22,19 @@ function random_element(arr) {
     return String(arr[Math.floor(Math.random() * arr.length)]);
 }
 
+function createRandomString(length) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+function safeChat(msg) {
+    return `${msg} [${createRandomString((Math.floor(Math.random() * 15))+10)}]`
+}
+
 function get_random_ip() {
     const array = [];
     for (let i = 0; i < 4; i++) {
@@ -117,6 +130,7 @@ module.exports = {
     blacklist,
     checkSpam,
     get_kd,
+    safeChat,
     spam_count,
     temp_blacklist,
     spam_offenses,
