@@ -65,9 +65,7 @@ function startup() {
         checkSpam: utils.checkSpam,
         blacklist: utils.blacklist,
         get_kd: utils.get_kd,
-        qbasty: [
-            "DUPES ARE GAY"
-        ],
+        safeChat: utils.safeChat,
         roasts: [
             "Your birth certificate is a griefing report.", "You're why the `/kill` command exists.",
             "Even Void wouldn't want to touch you.", "You look like a lag spike made human.",
@@ -98,7 +96,7 @@ function startup() {
         
             // Roleplay / identity
             "Futa", "Femboys", "Monster girls", "Slime girls", "Giantess", "Robots", "Pet play", "Yandere roleplay",
-            "Cosplay kink", "Gender play", "Crossdressing", "Objectification",
+            "Cosplay kink", "Age regression (non-sexual)", "Gender play", "Crossdressing", "Objectification",
             "DILFs", "MILFs", "Clowns", "Nuns", "Maids", "Neko play", "Bunny girls", "Goblins", "Fairies",
         
             // Power dynamics / BDSM
@@ -252,6 +250,4 @@ function startup() {
 }
 
 startup();
-
-
 
