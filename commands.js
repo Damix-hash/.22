@@ -806,7 +806,7 @@ const public_commands = {
             state.current_count = 0;
         } else {
             state.current_count++
-            bot.chat(state.safeChat(`Correct! Continue counting by running: -count ${state.current_count}`))
+            bot.chat(state.safeChat(`Correct! Continue: -count ${state.current_count}`))
         }
     },
 
@@ -827,11 +827,11 @@ const public_commands = {
     [`${prefix}playerjoins`]: (user, message, bot, state) => {
         let newest_user = state.newest_player ? "Yes" : "No"
 
-        bot.chat(state.safeChat(`Players joins logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'}`))
+        bot.chat(state.safeChat(`Logged joins: ${state.joined}, Most recent join: ${state.recent_join || 'None'}`))
     },
 
     [`${prefix}playerquits`]: (user, message, bot, state) => {
-        bot.chat(state.safeChat(`Players left logged: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`))
+        bot.chat(state.safeChat(`Logged quits: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`))
     },
 
     [`${prefix}avgping`]: (user, message, bot, state) => {
@@ -852,7 +852,7 @@ const public_commands = {
 
     [`${prefix}longestcd`]: (user, message, bot, state) => {
         if (state.longest_cooldown) {
-            bot.chat(state.safeChat(`Longest cooldown so far: ${state.longest_cooldown} seconds.`));
+            bot.chat(state.safeChat(`Longest cooldown so far: ${state.longest_cooldown}s.`));
         } else {
             bot.chat(state.safeChat("No cooldowns recorded yet."));
         }
@@ -1022,5 +1022,6 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
+
 
 
