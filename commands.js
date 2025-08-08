@@ -17,37 +17,37 @@ const public_commands = {
         const totalPages = Math.ceil(commandList.length / maxPerPage);
 
         if (page < 1 || page > totalPages) {
-            return bot.chat(`Invalid page. (${page}/${totalPages})`);
+            return bot.chat(state.safeChat(`Invalid page. (${page}/${totalPages})`));
         }
 
         const startIndex = (page - 1) * maxPerPage;
         const paginated = commandList.slice(startIndex, startIndex + maxPerPage);
         const modeText = isAdminMode ? "Admin" : "Public";
 
-        bot.chat(`${modeText} Commands - Page ${page}/${totalPages}: ${paginated.join(" ")}`);
+        bot.chat(state.safeChat(`${modeText} Commands - Page ${page}/${totalPages}: ${paginated.join(" ")}`));
     },
 
     [`${prefix}topkills`]: (user, message, bot, state) => {
         const entries = Object.entries(state.crystal_kills);
         if (entries.length === 0) {
-            bot.chat(`Amount of people crystalled since join: ${state.crystalled}`)
+            bot.chat(state.safeChat(`Amount of people crystalled since join: ${state.crystalled}`))
         } else {
             const [topUser, topKills] = entries.sort((a, b) => b[1] - a[1])[0];
-            bot.chat(`Amount of people crystalled since join: ${state.crystalled}, Most kills has: ${topUser} with ${topKills} kills`);
+            bot.chat(state.safeChat(`Amount of people crystalled since join: ${state.crystalled}, Most kills has: ${topUser} with ${topKills} kills`));
         }
     },
 
-    [`${prefix}uptime`]: (user, message, bot, state) => bot.chat(`Uptime: ${state.get_uptime()}`),
-    [`${prefix}deaths`]: (user, message, bot, state) => bot.chat(`Bot ${state.deaths}, Global: ${state.global_deaths}, vined_on_top: ${state.vined_on_top_deaths}, i_am_vined: ${state.i_am_vined_deaths}, Damix2131 ${state.damix_deaths}`),
-    [`${prefix}health`]: (user, message, bot, state) => bot.chat(`Bot has ${bot.health.toFixed(1)} hearts`),
+    [`${prefix}uptime`]: (user, message, bot, state) => bot.chat(state.safeChat(`Uptime: ${state.get_uptime()}`)),
+    [`${prefix}deaths`]: (user, message, bot, state) => bot.chat(state.safeChat(`Bot ${state.deaths}, Global: ${state.global_deaths}, vined_on_top: ${state.vined_on_top_deaths}, i_am_vined: ${state.i_am_vined_deaths}, Damix2131 ${state.damix_deaths}`)),
+    [`${prefix}health`]: (user, message, bot, state) => bot.chat(state.safeChat(`Bot has ${bot.health.toFixed(1)} hearts`)),
 
     [`${prefix}rape`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}rape `)[1]
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${user} rapes ${args}`)
+            bot.chat(state.safeChat(`${user} rapes ${args}`))
         } else {
-            bot.chat(`Usage: ${prefix}rape <username>`)
+            bot.chat(state.safeChat(`Usage: ${prefix}rape <username>`))
         }
     },
 
@@ -64,9 +64,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 jewish = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${jewish}% jewish`)
+            bot.chat(state.safeChat(`${args} is ${jewish}% jewish`))
         } else {
-            bot.chat(`${user} is ${jewish}% jewish`)
+            bot.chat(state.safeChat(`${user} is ${jewish}% jewish`))
         }
     },
 
@@ -80,9 +80,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${indian}% indian`)
+            bot.chat(state.safeChat(`${args} is ${indian}% indian`))
         } else {
-            bot.chat(`${user} is ${indian}% indian`)
+            bot.chat(state.safeChat(`${user} is ${indian}% indian`))
         }
     },
 
@@ -95,9 +95,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}'s ip is ${state.get_random_ip()}!! Send them an pizza to their doorstep!`)
+            bot.chat(state.safeChat(`${args}'s ip is ${state.get_random_ip()}!! Send them an pizza to their doorstep!`))
         } else {
-            bot.chat(`Usage: ${prefix}dox <username>`)
+            bot.chat(state.safeChat(`Usage: ${prefix}dox <username>`))
         }
     },
 
@@ -111,9 +111,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}'s dick: 8${size}D`);
+            bot.chat(state.safeChat(`${args}'s dick: 8${size}D`));
         } else {
-            bot.chat(`${user}'s dick: 8${size}D`);
+            bot.chat(state.safeChat(`${user}'s dick: 8${size}D`));
         }
     },
 
@@ -127,9 +127,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}'s IQ is ${iq}`);
+            bot.chat(state.safeChat(`${args}'s IQ is ${iq}`));
         } else {
-            bot.chat(`${user}'s IQ is ${iq}`);
+            bot.chat(state.safeChat(`${user}'s IQ is ${iq}`));
         }
     },
 
@@ -142,9 +142,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`Go kill yourself ${args}`);
+            bot.chat(state.safeChat(`Go kill yourself ${args}`));
         } else {
-            bot.chat(`Usage: ${prefix}kys <username>`);
+            bot.chat(state.safeChat(`Usage: ${prefix}kys <username>`));
         }
     },
 
@@ -161,9 +161,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% gay`);
+            bot.chat(state.safeChat(`${args} is ${percent}% gay`));
         } else {
-            bot.chat(`${user} is ${percent}% gay`);
+            bot.chat(state.safeChat(`${user} is ${percent}% gay`));
         }
     },
 
@@ -180,9 +180,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% furry`);
+            bot.chat(state.safeChat(`${args} is ${percent}% furry`));
         } else {
-            bot.chat(`${user} is ${percent}% furry`);
+            bot.chat(state.safeChat(`${user} is ${percent}% furry`));
         }
     },
 
@@ -199,9 +199,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% trans`);
+            bot.chat(state.safeChat(`${args} is ${percent}% trans`));
         } else {
-            bot.chat(`${user} is ${percent}% trans`);
+            bot.chat(state.safeChat(`${user} is ${percent}% trans`));
         }
     },
 
@@ -218,9 +218,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% retarded`);
+            bot.chat(state.safeChat(`${args} is ${percent}% retarded`));
         } else {
-            bot.chat(`${user} is ${percent}% retarded`);
+            bot.chat(state.safeChat(`${user} is ${percent}% retarded`));
         }
     },
 
@@ -237,9 +237,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% femboy`);
+            bot.chat(state.safeChat(`${args} is ${percent}% femboy`));
         } else {
-            bot.chat(`${user} is ${percent}% femboy`);
+            bot.chat(state.safeChat(`${user} is ${percent}% femboy`));
         }
     },
 
@@ -256,9 +256,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% nigger`);
+            bot.chat(state.safeChat(`${args} is ${percent}% nigger`));
         } else {
-            bot.chat(`${user} is ${percent}% nigger`);
+            bot.chat(state.safeChat(`${user} is ${percent}% nigger`));
         }
     },
 
@@ -268,14 +268,14 @@ const public_commands = {
 
     //   if (args && args.trim().length > 0) {
     //     if (kits.includes(args)) {
-    //       bot.chat(`${user} has received kit ${args}`)
+    //       bot.chat(state.safeChat(`${user} has received kit ${args}`)
     //     } else if (args.toLowerCase() === 'help') {
-    //       bot.chat(`Avaiable kits: ${kits.join(', ')}`)
+    //       bot.chat(state.safeChat(`Avaiable kits: ${kits.join(', ')}`)
     //     } else {
-    //       bot.chat(`Invalid Kit!, Use: ${kits.join(', ')}`)
+    //       bot.chat(state.safeChat(`Invalid Kit!, Use: ${kits.join(', ')}`)
     //     }
     //   } else {
-    //     bot.chat(`Please pick an Kit you want to use with ${prefix}kit help`)
+    //     bot.chat(state.safeChat(`Please pick an Kit you want to use with ${prefix}kit help`)
     //   }
     // },
 
@@ -292,9 +292,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% lesbian`);
+            bot.chat(state.safeChat(`${args} is ${percent}% lesbian`));
         } else {
-            bot.chat(`${user} is ${percent}% lesbian`);
+            bot.chat(state.safeChat(`${user} is ${percent}% lesbian`));
         }
     },
 
@@ -311,9 +311,9 @@ const public_commands = {
             if (args.toLowerCase() === 'qbasty') {
                 percent = Math.floor(Math.random() * 31) + 70;
             }
-            bot.chat(`${args} is ${percent}% turkish`);
+            bot.chat(state.safeChat(`${args} is ${percent}% turkish`));
         } else {
-            bot.chat(`${user} is ${percent}% turkish`);
+            bot.chat(state.safeChat(`${user} is ${percent}% turkish`));
         }
     },
 
@@ -327,9 +327,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% simp`);
+            bot.chat(state.safeChat(`${args} is ${percent}% simp`));
         } else {
-            bot.chat(`${user} is ${percent}% simp`);
+            bot.chat(state.safeChat(`${user} is ${percent}% simp`));
         }
     },
 
@@ -343,21 +343,21 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${status}`);
+            bot.chat(state.safeChat(`${args} is ${status}`));
         } else {
-            bot.chat(`${user} is ${status}`);
+            bot.chat(state.safeChat(`${user} is ${status}`));
         }
     },
 
     [`${prefix}love`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}love `)[1];
         if (!args || args.trim().split(" ").length < 2) {
-            return bot.chat(`Usage: ${prefix}love <user1> <user2>`);
+            return bot.chat(state.safeChat(`Usage: ${prefix}love <user1> <user2>`));
         }
 
         const [user1, user2] = args.trim().split(" ");
         const percent = Math.floor(Math.random() * 101);
-        bot.chat(`${user1} <3 ${user2} = ${percent}% match`);
+        bot.chat(state.safeChat(`${user1} <3 ${user2} = ${percent}% match`));
     },
 
     [`${prefix}rate`]: (user, message, bot, state) => {
@@ -370,9 +370,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is a ${rating}/10`);
+            bot.chat(state.safeChat(`${args} is a ${rating}/10`));
         } else {
-            bot.chat(`${user} is a ${rating}/10`);
+            bot.chat(state.safeChat(`${user} is a ${rating}/10`));
         }
     },
 
@@ -385,9 +385,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`Shut the fuck up ${args}`);
+            bot.chat(state.safeChat(`Shut the fuck up ${args}`));
         } else {
-            bot.chat(`Usage: ${prefix}stfu <username>`);
+            bot.chat(state.safeChat(`Usage: ${prefix}stfu <username>`));
         }
     },
 
@@ -401,9 +401,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% racist`);
+            bot.chat(state.safeChat(`${args} is ${percent}% racist`));
         } else {
-            bot.chat(`${user} is ${percent}% racist`);
+            bot.chat(state.safeChat(`${user} is ${percent}% racist`));
         }
     },
 
@@ -417,9 +417,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} ${insult}`);
+            bot.chat(state.safeChat(`${args} ${insult}`));
         } else {
-            bot.chat(`${user} ${insult}`);
+            bot.chat(state.safeChat(`${user} ${insult}`));
         }
     },
 
@@ -434,9 +434,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} diagnosed with ${result}`);
+            bot.chat(state.safeChat(`${args} diagnosed with ${result}`));
         } else {
-            bot.chat(`${user} diagnosed with ${result}`);
+            bot.chat(state.safeChat(`${user} diagnosed with ${result}`));
         }
     },
 
@@ -450,9 +450,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% cringe`);
+            bot.chat(state.safeChat(`${args} is ${percent}% cringe`));
         } else {
-            bot.chat(`${user} is ${percent}% cringe`);
+            bot.chat(state.safeChat(`${user} is ${percent}% cringe`));
         }
     },
 
@@ -466,9 +466,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% swedish`);
+            bot.chat(state.safeChat(`${args} is ${percent}% swedish`));
         } else {
-            bot.chat(`${user} is ${percent}% swedish`);
+            bot.chat(state.safeChat(`${user} is ${percent}% swedish`));
         }
     },
 
@@ -482,9 +482,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% european`);
+            bot.chat(state.safeChat(`${args} is ${percent}% european`));
         } else {
-            bot.chat(`${user} is ${percent}% european`);
+            bot.chat(state.safeChat(`${user} is ${percent}% european`));
         }
     },
 
@@ -498,9 +498,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% white`);
+            bot.chat(state.safeChat(`${args} is ${percent}% white`));
         } else {
-            bot.chat(`${user} is ${percent}% white`);
+            bot.chat(state.safeChat(`${user} is ${percent}% white`));
         }
     },
 
@@ -514,9 +514,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% aryan`);
+            bot.chat(state.safeChat(`${args} is ${percent}% aryan`));
         } else {
-            bot.chat(`${user} is ${percent}% aryan`);
+            bot.chat(state.safeChat(`${user} is ${percent}% aryan`));
         }
     },
 
@@ -530,9 +530,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% nazi`);
+            bot.chat(state.safeChat(`${args} is ${percent}% nazi`));
         } else {
-            bot.chat(`${user} is ${percent}% nazi`);
+            bot.chat(state.safeChat(`${user} is ${percent}% nazi`));
         }
     },
 
@@ -546,9 +546,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args} is ${percent}% gooner`);
+            bot.chat(state.safeChat(`${args} is ${percent}% gooner`));
         } else {
-            bot.chat(`${user} is ${percent}% gooner`);
+            bot.chat(state.safeChat(`${user} is ${percent}% gooner`));
         }
     },
 
@@ -563,9 +563,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}: ${result}`);
+            bot.chat(state.safeChat(`${args}: ${result}`));
         } else {
-            bot.chat(`${user}: ${result}`);
+            bot.chat(state.safeChat(`${user}: ${result}`));
         }
     },
     [`${prefix}gender`]: (user, message, bot, state) => {
@@ -578,9 +578,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}: ${result}`);
+            bot.chat(state.safeChat(`${args}: ${result}`));
         } else {
-            bot.chat(`${user}: ${result}`);
+            bot.chat(state.safeChat(`${user}: ${result}`));
         }
     },
     [`${prefix}npc`]: (user, message, bot, state) => {
@@ -593,9 +593,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}: ${result}`);
+            bot.chat(state.safeChat(`${args}: ${result}`));
         } else {
-            bot.chat(`${user}: ${result}`);
+            bot.chat(state.safeChat(`${user}: ${result}`));
         }
     },
 
@@ -609,9 +609,9 @@ const public_commands = {
         }
 
         if (args && args.trim().length > 0) {
-            bot.chat(`${args}'s screen right now: ${screen}`);
+            bot.chat(state.safeChat(`${args}'s screen right now: ${screen}`));
         } else {
-            bot.chat(`${user}'s screen right now: ${screen}`);
+            bot.chat(state.safeChat(`${user}'s screen right now: ${screen}`));
         }
     },
 
@@ -624,9 +624,9 @@ const public_commands = {
                 const players = Object.keys(bot.players);
                 args = state.random_element(players);
             }
-            bot.chat(`${args} has: ${randomSize}-cups`);
+            bot.chat(state.safeChat(`${args} has: ${randomSize}-cups`));
         } else {
-            bot.chat(`${user} has: ${randomSize}-cups`);
+            bot.chat(state.safeChat(`${user} has: ${randomSize}-cups`));
         }
     },
 
@@ -639,55 +639,49 @@ const public_commands = {
                 const players = Object.keys(bot.players);
                 args = state.random_element(players);
             }            
-            bot.chat(`${args}'s fetish is: ${randomFetish}`);
+            bot.chat(state.safeChat(`${args}'s fetish is: ${randomFetish}`));
         } else {
-            bot.chat(`${user}'s fetish is: ${randomFetish}`);
+            bot.chat(state.safeChat(`${user}'s fetish is: ${randomFetish}`));
         }
-    },
-
-    [`${prefix}qbasty`]: (user, message, bot, state) => {
-        let args = message.split(`${prefix}qbasty `)[1];
-        const qbastyReply = state.random_element(state.qbasty);
-            bot.chat(`${qbastyReply} -qbasty`);
     },
 
     [`${prefix}8ball`]: (user, message, bot, state) => {
         const response = state.random_element(state.answers);
-        bot.chat(`[8-ball] ${response}`);
+        bot.chat(state.safeChat(`[8-ball] ${response}`));
     },
 
     [`${prefix}roll`]: (user, message, bot, state) => {
         const rolled = Math.floor(Math.random() * 5) + 1;
-        bot.chat(`[Dice] Rolled a ${rolled}`);
+        bot.chat(state.safeChat(`[Dice] Rolled a ${rolled}`));
     },
 
     [`${prefix}flip`]: (user, message, bot, state) => {
         const result = Math.random() < 0.5 ? "Heads" : "Tails";
-        bot.chat(`[CoinFlip] It's ${result}`);
+        bot.chat(state.safeChat(`[CoinFlip] It's ${result}`));
     },
 
     [`${prefix}choose`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}choose `)[1];
-        if (!args) return bot.chat(`Usage: ${prefix}choose option1, option2, ...`);
+        if (!args) return bot.chat(state.safeChat(`Usage: ${prefix}choose option1, option2, ...`));
         const options = args.split(" ").map(x => x.trim()).filter(Boolean) || args.split(",").map(x => x.trim()).filter(Boolean);
-        if (options.length < 2) return bot.chat("Give me at least 2 choices.");
+        if (options.length < 2) return bot.chat(state.safeChat("Give me at least 2 choices."));
         const choice = state.random_element(options);
-        bot.chat(`I choose: ${choice}`);
+        bot.chat(state.safeChat(`I choose: ${choice}`));
     },
 
     [`${prefix}playerlist`]: (user, message, bot, state) => {
         const players = Object.keys(bot.players).length;
         if (players.length === 0) {
-            bot.chat("No players online.");
+            bot.chat(state.safeChat("No players online."));
         } else {
             const tabPlayers = bot.tablist?.header?.text.split('§cOnline players: §f')[1].replace('\n', '')
-            bot.chat(`Players in-game: ${players}, Players in-total: ${tabPlayers}`);
+            bot.chat(state.safeChat(`Players in-game: ${players}, Players in-total: ${tabPlayers}`));
         }
     },
 
     [`${prefix}tps`]: (user, message, bot, state) => {
         const tps = bot.getTps()
-        bot.chat(`Server TPS: ${tps}`);
+        bot.chat(state.safeChat(`Server TPS: ${tps}`));
     },
 
     [`${prefix}kd`]: (user, message, bot, state) => {
@@ -699,9 +693,9 @@ const public_commands = {
                 args = state.random_element(players);
             }
             const target = args.trim();
-            bot.chat(state.get_kd(target, state))
+            bot.chat(state.safeChat(state.get_kd(target, state)))
         } else {
-            bot.chat(state.get_kd(user, state))
+            bot.chat(state.safeChat(state.get_kd(user, state)))
         }
     },
 
@@ -717,24 +711,24 @@ const public_commands = {
 
             if (state.quotes[target] && state.quotes[target].length > 0) {
                 const randomQuote = state.quotes[target][Math.floor(Math.random() * state.quotes[target].length)];
-                bot.chat(`Quote from ${target}: "${randomQuote}"`);
+                bot.chat(state.safeChat(`Quote from ${target}: "${randomQuote}"`));
             } else {
-                bot.chat(`No quotes found for ${target}.`);
+                bot.chat(state.safeChat(`No quotes found for ${target}.`));
             }
         } else {
-            bot.chat(`Usage: ${prefix}quote <username>`);
+            bot.chat(state.safeChat(`Usage: ${prefix}quote <username>`));
         }
     },
 
     [`${prefix}restart`]: (user, message, bot, state) => {
         let counting = false
         if (state.server_restart !== 0) {
-            bot.chat(`Server will restart in approximately: ${state.server_restart} seconds.`)
+            bot.chat(state.safeChat(`Server will restart in approximately: ${state.server_restart} seconds.`))
             counting = true
         } else if (counting && state.server_restart === 0) {
-            // bot.chat("Countdown is 0, but server didn't restart, did it?")
+            // bot.chat(state.safeChat("Countdown is 0, but server didn't restart, did it?"))
         } else {
-            bot.chat("Server didn't announce when server restarts.")
+            bot.chat(state.safeChat("Server didn't announce when server restarts."))
         }
     },
 
@@ -744,21 +738,21 @@ const public_commands = {
         
         if (args === 'random') args = state.random_element(Object.keys(bot.players));
         if (args && args.trim()) {
-            bot.chat(`${args} is ${percent}% paranoid 😨`);
+            bot.chat(state.safeChat(`${args} is ${percent}% paranoid`));
         } else {
-            bot.chat(`${user} is ${percent}% paranoid 😨`);
+            bot.chat(state.safeChat(`${user} is ${percent}% paranoid`));
         }
     },
 
     [`${prefix}stats`]: (user, message, bot, state) => {
-        bot.chat(`Bot uses: ${state.bot_uses}, Bot tips sent: ${state.bot_tips_sent}, Ads seen: ${state.ads_seen}, word "dupe" mentioned: ${state.dupe_mentioned}, public command: ${Object.keys(public_commands).length}`)
+        bot.chat(state.safeChat(`Bot uses: ${state.bot_uses}, Bot tips sent: ${state.bot_tips_sent}, Ads seen: ${state.ads_seen}, word "dupe" mentioned: ${state.dupe_mentioned}, public command: ${Object.keys(public_commands).length}`))
     },
 
     [`${prefix}weather`]: (user, message, bot, state) => {
         let rainState = bot.rainState > 0 ? 'Raining' : 'Clear skies';
         let thunderState = bot.thunderState > 0 ? 'Thunderstorm' : 'No thunder';
 
-        bot.chat(`Weather: ${rainState} | ${thunderState}`);
+        bot.chat(state.safeChat(`Weather: ${rainState} | ${thunderState}`));
     },
 
     [`${prefix}time`]: (user, message, bot, state) => {
@@ -782,7 +776,7 @@ const public_commands = {
         const moonPhaseIndex = bot.time.moonPhase;
         const moonPhase = moonPhases[moonPhaseIndex] || 'Unknown';
 
-        bot.chat(`Day ${day} | Time: ${timeState} (${Math.floor(timeOfDay)}/24000 ticks) | Moon Phase: ${moonPhase}`);
+        bot.chat(state.safeChat(`Day ${day} | Time: ${timeState} (${Math.floor(timeOfDay)}/24000 ticks) | Moon Phase: ${moonPhase}`));
     },
 
     // not in use. maybe later
@@ -798,21 +792,21 @@ const public_commands = {
             const option_2 = args[2]
             const time_length = args[3]
 
-            bot.chat(`[POLL] Poll has started!:`)
+            bot.chat(state.safeChat(`[POLL] Poll has started!:`)
         }
     },*/
     [`${prefix}count`]: (user, message, bot, state) => {
         let args = parseInt(message.split(`${prefix}count `)[1]);
 
         if (isNaN(args)) {
-            bot.chat("Please provide an valid number.")
+            bot.chat(state.safeChat("Please provide an valid number."))
         }
         if (args !== state.current_count) {
-            bot.chat(`Wrong number! Expected: ${state.current_count}. Resetting to 0.`);
+            bot.chat(state.safeChat(`Wrong number! Expected: ${state.current_count}. Resetting to 0.`));
             state.current_count = 0;
         } else {
             state.current_count++
-            bot.chat(`Correct! Continue counting by running: -count ${state.current_count}`)
+            bot.chat(state.safeChat(`Correct! Continue counting by running: -count ${state.current_count}`))
         }
     },
 
@@ -824,20 +818,20 @@ const public_commands = {
                 const players = Object.keys(bot.players);
                 args = state.random_element(players);
             }            
-            bot.chat(`${args}'s ping is: ${bot.players[args]?.ping}`);
+            bot.chat(state.safeChat(`${args}'s ping is: ${bot.players[args]?.ping}`));
         } else {
-            bot.chat(`${user}'s ping is: ${bot.players[user]?.ping}`);
+            bot.chat(state.safeChat(`${user}'s ping is: ${bot.players[user]?.ping}`));
         }
     },
 
     [`${prefix}playerjoins`]: (user, message, bot, state) => {
         let newest_user = state.newest_player ? "Yes" : "No"
 
-        bot.chat(`Players joined logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'} (Is he new?: ${newest_user})`)
+        bot.chat(state.safeChat(`Players joined logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'} (Is he new?: ${newest_user})`))
     },
 
     [`${prefix}playerquits`]: (user, message, bot, state) => {
-        bot.chat(`Players left logged: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`)
+        bot.chat(state.safeChat(`Players left logged: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`))
     },
 
     [`${prefix}avgping`]: (user, message, bot, state) => {
@@ -853,19 +847,19 @@ const public_commands = {
         }
 
         let avg = (total / count).toFixed(1);
-        bot.chat(`Avg Server Ping: ${avg}ms`);
+        bot.chat(state.safeChat(`Avg Server Ping: ${avg}ms`));
     },
 
     [`${prefix}longestcd`]: (user, message, bot, state) => {
         if (state.longest_cooldown) {
-            bot.chat(`Longest cooldown so far: ${state.longest_cooldown} seconds.`);
+            bot.chat(state.safeChat(`Longest cooldown so far: ${state.longest_cooldown} seconds.`));
         } else {
-            bot.chat("No cooldowns recorded yet.");
+            bot.chat(state.safeChat("No cooldowns recorded yet."));
         }
     },
 
     [`${prefix}discord`]: (user, message, bot, state) => {
-        bot.chat(`Official discord server of .22 - https://discord.gg/mjrDsGCV7F`)
+        bot.chat(state.safeChat(`Official discord server of .22 - https://discord.gg/mjrDsGCV7F`))
     }    
 }
 
@@ -874,15 +868,15 @@ const admin_commands = {
     // ":tp": (user) => bot.chat(`/tpa ${user}`),
     // ":scan": (user, message, bot, state) => {
     //   auto_tp = !auto_tp;
-    //   bot.chat(`Scanner is now ${auto_tp ? "ON" : "OFF"}!`);
+    //   bot.chat(state.safeChat(`Scanner is now ${auto_tp ? "ON" : "OFF"}!`);
     // },
     // ":pos": (user, message, bot, state) => {
     //   const pos = bot.entity.position;
-    //   bot.chat(`My position is: ${Math.floor(pos.x)} X, ${Math.floor(pos.y)} Y, ${Math.floor(pos.z)} Z!`);
+    //   bot.chat(state.safeChat(`My position is: ${Math.floor(pos.x)} X, ${Math.floor(pos.y)} Y, ${Math.floor(pos.z)} Z!`);
     // },
     // ":hotspot": (user, message, bot, state) => {
     //   scan_hotspot = !scan_hotspot;
-    //   bot.chat(`Hotspot logger is now ${scan_hotspot ? "ON" : "OFF"}!`);
+    //   bot.chat(state.safeChat(`Hotspot logger is now ${scan_hotspot ? "ON" : "OFF"}!`);
     // },
 
 
@@ -979,22 +973,24 @@ const admin_commands = {
 
     [`${prefix}run`]: (user, message, bot, state) => {
         const message_to_run = message.split(`${prefix}run `)[1];
-        const blacklist = ["/ignore", "/delhome", "/freecam", "/balloons", "/tpy"];
+        const blacklist = ["/ignore", "/delhome", "/freecam", "/balloons", "/tpy", "/tpa", "/kill", "/suicide",
+            "/togglewhispering", "/togglechat", "/hotspot"
+        ];
         if (!blacklist.some(cmd => message_to_run.includes(cmd))) {
             bot.chat(message_to_run);
         } else {
-            bot.chat("Blacklisted command!");
+            bot.chat(state.safeChat("Blacklisted command!"));
         }
     },
 
     [`${prefix}say`]: (user, message, bot, state) => {
         const message_to_run = message.split(`${prefix}say `)[1];
-        bot.chat(` ${message_to_run}`) // space at start doesn't let any commands to run
+        bot.chat(state.safeChat(` ${message_to_run}`)) // space at start doesn't let any commands to run
     },
 
     [`${prefix}welcomer`]: (user, message, bot, state) => {
        state.welcomer = !state.welcomer;
-       bot.chat(`Scanner is now ${state.welcomer ? "ON" : "OFF"}!`);
+       bot.chat(state.safeChat(`Scanner is now ${state.welcomer ? "ON" : "OFF"}!`));
     },
 
     [`${prefix}tempwl`]: (user, message, bot, state) => {
@@ -1019,13 +1015,10 @@ const admin_commands = {
     },
     [`${prefix}timeout`]: (user, message, bot, state) => {
         if (user === 'Damix2131') {
-            bot.chat("Removing keep_alive listener!, timing out in 30 seconds as of now.")
+            bot.chat(state.safeChat("Removing keep_alive listener!, timing out in 30 seconds as of now."))
             bot._client.removeAllListeners('keep_alive');    
         }
     }, 
 }
 
 module.exports = { public_commands, admin_commands };
-
-
-
