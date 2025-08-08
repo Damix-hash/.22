@@ -52,10 +52,9 @@ npm install
 
 ## Usage
 
-1. Set environment variables:
+1. Set environment variable/s:
 
 ```bash
-export MC_EMAIL="your_email@example.com"
 export MC_PASSWORD="your_password"
 ```
 
@@ -99,8 +98,8 @@ Prefix: `-`
 | `stats`       | Show server/player stats            |
 | `weather`     | Minecraft weather status            |
 | `time`        | Minecraft world time                |
-| `count`       | Count events/messages               |
-| `ping`        | Show bot ping                       |
+| `count`       | Counting game               |
+| `ping`        | Show players ping                       |
 | `playerjoins` | Show join count                     |
 | `playerquits` | Show quit count                     |
 | `avgping`     | Show average ping                   |
@@ -144,7 +143,3 @@ MIT License — see [LICENSE](LICENSE) file.
 [![GitHub stars](https://img.shields.io/github/stars/Damix-hash/.22?style=social)](https://github.com/Damix-hash/.22/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Damix-hash/.22?style=social)](https://github.com/Damix-hash/.22/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/Damix-hash/.22)](https://github.com/Damix-hash/.22/issues)
-
----
-
-Would you like me to generate a **dynamic GitHub Action workflow or badge updater** that fetches live server stats to keep these badges automatically up-to-date?
