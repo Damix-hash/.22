@@ -112,7 +112,8 @@ module.exports = function(bot, state) {
             if (command.startsWith(state.prefix)) {
                 if (state.temp_blacklist.has(username)) return;
                 if (checkSpam(bot, username)) return;
-
+                if (message.includes('discord') || message.includes("join")) return;
+                
                 if (whitelisted_users(username)) {
                     for (const cmd in admin_commands) {
                         if (command.startsWith(cmd)) {
