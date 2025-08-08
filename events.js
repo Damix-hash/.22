@@ -22,7 +22,7 @@ module.exports = function(bot, state) {
             setInterval(() => {
                 if (spam_messages.length === 0) return;
 
-                state.safeChat(spam_messages[tipIndex], bot);
+                bot.chat(spam_messages[tipIndex]);
                 tipIndex = (tipIndex + 1) % spam_messages.length;
                 state.bot_tips_sent++;
             }, 180000); // every 3 minutes
@@ -251,4 +251,5 @@ module.exports = function(bot, state) {
         }
     });
 };
+
 
