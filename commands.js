@@ -827,7 +827,7 @@ const public_commands = {
     [`${prefix}playerjoins`]: (user, message, bot, state) => {
         let newest_user = state.newest_player ? "Yes" : "No"
 
-        bot.chat(state.safeChat(`Players joined logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'} (Is he new?: ${newest_user})`))
+        bot.chat(state.safeChat(`Players joined logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'}`))
     },
 
     [`${prefix}playerquits`]: (user, message, bot, state) => {
@@ -1022,3 +1022,4 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
+
