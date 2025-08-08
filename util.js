@@ -32,7 +32,7 @@ function createRandomString(length) {
 }
 
 function safeChat(msg) {
-    return `${msg} [${createRandomString((Math.floor(Math.random() * 15))+10)}]`
+    return `${msg} [${createRandomString((Math.floor(Math.random() * 5))+10)}]`
 }
 
 function get_random_ip() {
@@ -136,3 +136,4 @@ module.exports = {
     spam_offenses,
     whitelist,
 };
+
