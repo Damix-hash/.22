@@ -22,7 +22,7 @@ module.exports = function(bot, state) {
             setInterval(() => {
                 if (spam_messages.length === 0) return;
 
-                safeChat(spam_messages[tipIndex], bot);
+                state.safeChat(spam_messages[tipIndex], bot);
                 tipIndex = (tipIndex + 1) % spam_messages.length;
                 state.bot_tips_sent++;
             }, 180000); // every 3 minutes
@@ -53,7 +53,7 @@ module.exports = function(bot, state) {
             setTimeout(() => {
                 const pos = bot.entity.position;
                 const info = `${Math.floor(pos.x)}.X, ${Math.floor(pos.y)}.Y, ${Math.floor(pos.z)}.Z in minecraft:${bot.game.dimension}`;
-                safeChat(`Hotspot Located At: ${info}`, bot);
+                state.safeChat(`Hotspot Located At: ${info}`, bot);
                 state.hotspot_death = true;
                 bot.chat("/kill");
                 state.hotspot_death = false;
@@ -251,3 +251,4 @@ module.exports = function(bot, state) {
         }
     });
 };
+
