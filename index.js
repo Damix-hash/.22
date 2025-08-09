@@ -1,4 +1,6 @@
 // index.js
+//require('dotenv').config();
+
 const mineflayer = require('mineflayer');
 const tpsPlugin = require('mineflayer-tps')(mineflayer);
 
@@ -35,6 +37,9 @@ function startup() {
         crystal_deaths: {},
         quotes: {},
         avg_ping: [],
+        marriages: {},
+        pendingMarriage: {},
+        pendingDivorce: {},
         joined: 0,
         quitted: 0,
         recent_join: '',
