@@ -41,6 +41,7 @@ module.exports = function(bot, state) {
     bot.on('login', () => {
         console.log('Logged In');
         bot.setControlState("forward", true);
+        bot.setControlState("jump", true);
     });
 
     bot.on('bossBarCreated', async (bossBar) => {
@@ -251,5 +252,6 @@ module.exports = function(bot, state) {
         }
     });
 };
+
 
 
