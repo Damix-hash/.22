@@ -806,7 +806,7 @@ const public_commands = {
             state.current_count = 0;
         } else {
             state.current_count++
-            bot.chat(state.safeChat(`Correct! Continue: -count ${state.current_count}`))
+            bot.chat(state.safeChat(`Correct! Continue counting by running: -count ${state.current_count}`))
         }
     },
 
@@ -827,11 +827,11 @@ const public_commands = {
     [`${prefix}playerjoins`]: (user, message, bot, state) => {
         let newest_user = state.newest_player ? "Yes" : "No"
 
-        bot.chat(state.safeChat(`Logged joins: ${state.joined}, Most recent join: ${state.recent_join || 'None'}`))
+        bot.chat(state.safeChat(`Players joined logged: ${state.joined}, Most recent join: ${state.recent_join || 'None'} (Is he new?: ${newest_user})`))
     },
 
     [`${prefix}playerquits`]: (user, message, bot, state) => {
-        bot.chat(state.safeChat(`Logged quits: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`))
+        bot.chat(state.safeChat(`Players left logged: ${state.quitted}, Most recent quit: ${state.recent_quit || 'None'}`))
     },
 
     [`${prefix}avgping`]: (user, message, bot, state) => {
@@ -850,16 +850,74 @@ const public_commands = {
         bot.chat(state.safeChat(`Avg Server Ping: ${avg}ms`));
     },
 
+    [`${prefix}marry`]: (user, message, bot, state) => {
+        let target = message.split(`${prefix}marry `)[1];
+
+        if (!target) return bot.chat(state.safeChat(`Usage: ${prefix}marry <player>`));
+        if (user === target) return bot.chat(state.safeChat(`${user}, you can't marry yourself.`));
+
+        if (state.marriages[user]) return bot.chat(state.safeChat(`${user}, you're already married to ${state.marriages[user]}.`));
+        if (state.marriages[target]) return bot.chat(state.safeChat(`${target} is already married to ${state.marriages[target]}.`));
+
+        state.pendingMarriage[target] = user;
+
+        bot.chat(`/msg ${target} ${user} wants to marry you! Type "${prefix}accept" to accept.`);
+    },
+
+    // --- ACCEPT MARRIAGE ---
+    [`${prefix}accept`]: (user, message, bot, state) => {
+        if (!state.pendingMarriage[user]) return bot.chat(state.safeChat(`${user}, nobody has proposed to you.`));
+
+        const proposer = state.pendingMarriage[user];
+        state.marriages[user] = proposer;
+        state.marriages[proposer] = user;
+        delete state.pendingMarriage[user];
+
+        bot.chat(state.safeChat(`${user} and ${proposer} are now married!`));
+    },
+
+    // --- DIVORCE REQUEST ---
+    [`${prefix}divorce`]: (user, message, bot, state) => {
+        let target = message.split(`${prefix}divorce `)[1];
+        if (!target) return bot.chat(state.safeChat(`Usage: ${prefix}divorce <player>`));
+
+        if (!state.marriages[user] || state.marriages[user] !== target) {
+            return bot.chat(state.safeChat(`${user}, you are not married to ${target}.`));
+        }
+
+        state.pendingDivorce[target] = user;
+
+        bot.chat(`/msg ${target} ${user} wants to divorce you. Type "${prefix}acceptdivorce" to confirm.`);
+    },
+
+    // --- ACCEPT DIVORCE ---
+    [`${prefix}acceptdivorce`]: (user, message, bot, state) => {
+        if (!state.pendingDivorce[user]) {
+            return bot.chat(state.safeChat(`${user}, nobody has asked to divorce you.`));
+        }
+
+        const requester = state.pendingDivorce[user];
+        delete state.pendingDivorce[user];
+
+        delete state.marriages[requester];
+        delete state.marriages[user];
+
+        bot.chat(`/msg ${requester} ${user} accepted the divorce. You are no longer married.`);
+        bot.chat(`/msg ${user} You have divorced ${requester}.`);
+
+        bot.chat(state.safeChat(`${user} and ${requester} are now divorced.`));
+    },
+    
     [`${prefix}longestcd`]: (user, message, bot, state) => {
         if (state.longest_cooldown) {
-            bot.chat(state.safeChat(`Longest cooldown so far: ${state.longest_cooldown}s.`));
+            bot.chat(state.safeChat(`Longest cooldown so far: ${state.longest_cooldown} seconds.`));
         } else {
             bot.chat(state.safeChat("No cooldowns recorded yet."));
         }
     },
 
     [`${prefix}discord`]: (user, message, bot, state) => {
-        bot.chat(state.safeChat(` .gg/mjrDsGCV7F <<`))
+        bot.chat(state.safeChat(`Official discord server of .22 - https://discord.gg/mjrDsGCV7F`))
     }    
 }
 
@@ -1022,8 +1080,3 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
-
-
-
-
-
