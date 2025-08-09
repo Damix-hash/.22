@@ -113,7 +113,7 @@ module.exports = function(bot, state) {
             if (command.startsWith(state.prefix)) {
                 if (state.temp_blacklist.has(username)) return;
                 if (checkSpam(bot, username)) return;
-                if (message.includes('discord.gg') || message.includes(".org") || message.includes(".com")) return;
+                if (message.includes('discord.gg') || message.includes(".org") || message.includes(".com") || message.includes("http") || message.includes("www")) return;
                 
                 if (whitelisted_users(username)) {
                     for (const cmd in admin_commands) {
@@ -252,6 +252,7 @@ module.exports = function(bot, state) {
         }
     });
 };
+
 
 
 
