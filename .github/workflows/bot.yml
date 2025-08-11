@@ -1,12 +1,14 @@
-name: .22 Bot Auto 5min Debug to Archive
+name: .22 Bot Auto 6h Run to Archive
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # every 6 hours
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # safety buffer
+    timeout-minutes: 370  # 6h + buffer
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
     steps:
@@ -21,12 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run bot for 5 minutes then stop
+      - name: Run bot for 6 hours then stop
         run: |
           npm start &
           BOT_PID=$!
           echo "Bot started with PID $BOT_PID"
-          sleep 300  # 5 minutes
+          sleep $((6 * 60 * 60))  # 6 hours
           echo "Stopping bot"
           kill $BOT_PID
           wait $BOT_PID || true
@@ -46,5 +48,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add output/
-          git commit -m "Debug autosave from bot run [ci skip]" || echo "No changes to commit"
+          git commit -m "Auto-save bot_data.json from main bot run [ci skip]" || echo "No changes to commit"
           git push origin main
