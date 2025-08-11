@@ -94,8 +94,50 @@ module.exports = function(bot, state) {
             console.log(message);
         }
 
-        if (!state.quotes[username]) state.quotes[username] = [];
-        if (message.includes('»')) state.quotes[username].push(message.trim());
+        if (message.includes('»')) {
+            const msgLower = message.toLowerCase();
+
+            const isAd =
+                msgLower.includes("join ") ||
+                msgLower.includes("subscribe") ||
+                msgLower.includes("free kits") ||
+                msgLower.includes("discord.gg") ||
+                msgLower.includes("dsc.gg") ||
+                msgLower.includes(".com") ||
+                msgLower.includes(".net") ||
+                msgLower.includes(".org") ||
+                msgLower.includes(".uk") ||
+                /\b\d{1,3}(\.\d{1,3}){3}\b/.test(msgLower);
+
+            const isCommand = msgLower.startsWith('-') || msgLower.startsWith('/');
+
+            let cleanedMessage = message.replace(/^\[[^\]]+\]\s*/, '');
+
+            cleanedMessage = cleanedMessage.replace(/<\/?Malachite>/g, '');
+
+            const msgText = cleanedMessage.split('» ')[1] || '';
+
+            if (!isAd && !isCommand && /^[\x00-\x7F\s.,'?!\-":;()0-9]+$/.test(msgText)) {
+                if (!state.quotes[username]) state.quotes[username] = [];
+
+                let isDuplicate = false;
+                if (state.quotes[username].length > 0) {
+                    const lastQuote = state.quotes[username][state.quotes[username].length - 1];
+                    const lastMessage = lastQuote.substring(lastQuote.indexOf('>') + 2);
+                    isDuplicate = lastMessage === cleanedMessage.trim();
+                }
+
+                if (!isDuplicate) {
+                    const now = new Date();
+                    const date = now.toISOString().slice(0, 10);
+                    const time = now.toTimeString().slice(0, 5);
+                    const timestamp = `${date} ${time}`;
+
+                    state.quotes[username].push(`<${timestamp}> ${cleanedMessage.trim()}`);
+                }
+            }
+        }
+
 
         if (state.auto_tp) {
             const teleport = ['tp', 'come', 'teleport', 'give me'];
@@ -115,7 +157,7 @@ module.exports = function(bot, state) {
 
                 if (state.temp_blacklist.has(username)) return;
                 if (checkSpam(bot, username)) return;
-                if (message.includes('discord') || message.includes("join")) return;
+                if (message.includes(".org") || message.includes(".uk") || message.includes(".com") || message.includes(".gg")) return;
                 
                 if (whitelisted_users(username)) {
                     if (admin_commands.hasOwnProperty(cmd)) {
