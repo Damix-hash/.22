@@ -3,7 +3,11 @@ name: .22 Bot Debug
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *' # every 15 minutes for quick testing (you can adjust)
+    - cron: '*/5 * * * *' # every 5 minutes
+
+concurrency:
+  group: bot-debug
+  cancel-in-progress: true
 
 jobs:
   run-bot-debug:
@@ -22,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run bot (no timeout)
-        run: npm start
+      - name: Run bot (timeout 4 minutes)
+        run: timeout 240 npm start
 
       - name: Upload bot_data artifact
         uses: actions/upload-artifact@v4
