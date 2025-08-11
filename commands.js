@@ -42,19 +42,19 @@ const public_commands = {
     [`${prefix}health`]: (user, message, bot, state) => bot.chat(state.safeChat(`Bot has ${bot.health.toFixed(1)} hearts`)),
 
     [`${prefix}rape`]: (user, message, bot, state) =>
-        handleTargetCommand(u, prefix, m, b, s, 'rape', '<username>', (user, target) => `${user} rapes ${target}`),
+        state.handleTargetCommand(user, prefix, message, bot, state, 'rape', '<username>', (user, target) => `${user} rapes ${target}`),
 
     [`${prefix}kys`]: (user, message, bot, state) =>
-        handleTargetCommand(u, prefix, m, b, s, 'kys', '<username>', (user, target) => `Go kill yourself ${target}`),
+        state.handleTargetCommand(user, prefix, message, bot, state, 'kys', '<username>', (user, target) => `Go kill yourself ${target}`),
 
     [`${prefix}pp`]: (user, message, bot, state) =>
-        handleTargetCommand(u, prefix, m, b, s, 'pp', '<username>', (user, target) => {
+        state.handleTargetCommand(user, prefix, message, bot, state, 'pp', '<username>', (user, target) => {
             const size = "=".repeat(Math.floor(Math.random() * 50));
             return `${target}'s dick: 8${size}D`;
         }),
 
     [`${prefix}iq`]: (user, message, bot, state) =>
-        handleTargetCommand(u, prefix, m, b, s, 'iq', '<username>', (user, target) => {
+        state.handleTargetCommand(user, prefix, message, bot, state, 'iq', '<username>', (user, target) => {
             const iq = Math.floor(Math.random() * 160) + 40;
             return `${target}'s IQ is ${iq}`;
         }),
