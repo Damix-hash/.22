@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout storage repo
-        uses: actions/checkout@v3
+        uses: actions/upload-artifact@v4
         with:
           repository: Damix-hash/.22-archive
           token: ${{ secrets.STORAGE_REPO_TOKEN }}
