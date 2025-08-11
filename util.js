@@ -18,11 +18,12 @@ function loadBotData(state) {
       const jsonData = fs.readFileSync(inputPath, 'utf8');
       const data = JSON.parse(jsonData);
 
-      state.quotes = data.quotes || [];
-      state.kills = data.kills || 0;
+      state.quotes = data.quotes || {};
+      state.crystalled = data.kills || 0;
+      state.crystal_deaths = data.crystal_deaths || {};
+      state.crystal_kills = data.crystal_kills || {};
       state.deaths = data.deaths || 0;
-      state.topKills = data.topKills || [];
-      // you can add more fields here if needed
+      state.topKills = data.topKills || {};
 
       console.log('[Bot] Loaded bot_data.json');
     } else {
@@ -34,12 +35,15 @@ function loadBotData(state) {
 }
 
 function saveBotData(state) {
+  const totalDeaths = Object.values(state.crystal_victims || {}).reduce((a, b) => a + b, 0);
+
   const data = {
-    quotes: state.quotes || [],
-    kills: state.kills || 0,
-    deaths: state.deaths || 0,
-    kdRatio: state.kills / Math.max(state.deaths, 1),
-    topKills: state.topKills || [],
+    quotes: state.quotes || {},
+    crystal_kills: state.crystal_kills || {},
+    crystal_victims: state.crystal_victims || {},
+    kills: state.crystalled || 0, 
+    deaths: totalDeaths,
+    topKills: state.crystal_kills || {},
     lastUpdate: new Date().toISOString()
   };
 
