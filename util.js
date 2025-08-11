@@ -35,7 +35,6 @@ function loadBotData(state) {
 }
 
 function saveBotData(state) {
-  console.log("[Bot] Running saveBotData()")
   try {
     const totalDeaths = Object.values(state.crystal_victims || {}).reduce((a, b) => a + b, 0);
 
@@ -53,12 +52,12 @@ function saveBotData(state) {
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
     const filePath = path.join(outputDir, 'bot_data.json');
-    console.log('[Bot] About to save bot data');
+    //console.log('[Bot] About to save bot data');
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
-    console.log(`[Bot] Saved bot_data.json at: ${filePath}`);
-    console.log(`[Bot] outputDir ${outputDir}`)
-    console.log('[Bot] __dirname is:', __dirname);
+    console.log(`[Bot] Saved Data!`);
+    //console.log(`[Bot] outputDir ${outputDir}`)
+    //console.log('[Bot] __dirname is:', __dirname);
   } catch (err) {
     console.error('[Bot] Error saving bot_data.json:', err);
   }
@@ -280,9 +279,3 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
-
-
-
-
-
-
