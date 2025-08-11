@@ -65,7 +65,7 @@ function saveBotData(state) {
 }
 
 
-function startAutoSave(state, intervalMs = 5 * 60 * 1000) {
+function startAutoSave(state, intervalMs = 2 * 60 * 1000) {
   setInterval(() => saveBotData(state), intervalMs);
 
   process.on('SIGINT', () => {
@@ -280,6 +280,7 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
 
 
 
