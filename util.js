@@ -35,29 +35,30 @@ function loadBotData(state) {
 }
 
 function saveBotData(state) {
-  const totalDeaths = Object.values(state.crystal_victims || {}).reduce((a, b) => a + b, 0);
+  try {
+    const totalDeaths = Object.values(state.crystal_victims || {}).reduce((a, b) => a + b, 0);
 
-  const data = {
-    quotes: state.quotes || {},
-    crystal_kills: state.crystal_kills || {},
-    crystal_victims: state.crystal_victims || {},
-    kills: state.crystalled || 0, 
-    deaths: totalDeaths,
-    topKills: state.crystal_kills || {},
-    lastUpdate: new Date().toISOString()
-  };
+    const data = {
+      quotes: state.quotes || {},
+      crystal_kills: state.crystal_kills || {},
+      crystal_victims: state.crystal_victims || {},
+      kills: state.crystalled || 0, 
+      deaths: totalDeaths,
+      topKills: state.crystal_kills || {},
+      lastUpdate: new Date().toISOString()
+    };
 
-  const outputDir = path.join(__dirname, 'output');
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+    const outputDir = path.join(__dirname, 'output');
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
-  const filePath = path.join(outputDir, 'bot_data.json');
+    const filePath = path.join(outputDir, 'bot_data.json');
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
-  fs.writeFileSync(
-    filePath,
-    JSON.stringify(data, null, 2)
-  );
-
-  console.log(`[Bot] Saved bot_data.json at: ${filePath}`);
+    console.log(`[Bot] Saved bot_data.json at: ${filePath}`);
+    console.log('[Bot] __dirname is:', __dirname);
+  } catch (err) {
+    console.error('[Bot] Error saving bot_data.json:', err);
+  }
 }
 
 
@@ -276,6 +277,7 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
 
 
 
