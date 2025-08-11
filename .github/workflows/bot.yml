@@ -33,6 +33,21 @@ jobs:
           kill $BOT_PID
           wait $BOT_PID || true
 
+      - name: List all files in root directory
+        run: ls -lR . || echo "Failed to list root directory"
+
+      - name: List files in output folder
+        run: ls -l ./output || echo "Output folder does not exist"
+
+      - name: Check bot_data.json existence and details
+        run: |
+          if [ -f ./output/bot_data.json ]; then
+            echo "bot_data.json found:"
+            ls -l ./output/bot_data.json
+          else
+            echo "bot_data.json NOT found"
+          fi
+
       - name: Upload bot_data artifact
         uses: actions/upload-artifact@v4
         with:
