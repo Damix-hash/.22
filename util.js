@@ -4,7 +4,7 @@ let startTime = Date.now();
 const spam_count = {};
 const temp_blacklist = new Map();
 const spam_offenses = {};
-const whitelist = ['Damix2131', 'q33a', 'ryk_cbaool'];
+const whitelist = ['Damix2131', 'q33a', 'ryk_cbaool', 'Abottomlesspit', 'MioAutoCrystal', 'NIKASTEIN'];
 
 function get_uptime() {
     const now = Date.now();
@@ -136,6 +136,7 @@ module.exports = {
     spam_offenses,
     whitelist,
 };
+
 
 
 
