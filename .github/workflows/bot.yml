@@ -25,7 +25,7 @@ jobs:
         run: npm start
 
       - name: Upload bot_data artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bot_data
           path: ./output/bot_data.json
@@ -35,23 +35,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout storage repo
-        uses: actions/upload-artifact@v4
+        uses: actions/checkout@v3
         with:
           repository: Damix-hash/.22-archive
           token: ${{ secrets.STORAGE_REPO_TOKEN }}
           path: storage-repo
-
+  
       - name: Download bot_data artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bot_data
           path: storage-repo
-
+  
       - name: Commit and push bot_data.json
         run: |
           cd storage-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add bot_data.json
-          git commit -m "Update bot_data.json from workflow"
+          git commit -m "Update bot_data.json from workflow" || echo "No changes to commit"
           git push
