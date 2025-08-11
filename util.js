@@ -24,6 +24,7 @@ function loadBotData(state) {
       state.crystal_kills = data.crystal_kills || {};
       state.deaths = data.deaths || 0;
       state.topKills = data.topKills || {};
+      state.marriages = data.marriages || {};
 
       console.log('[Bot] Loaded bot_data.json');
     } else {
@@ -45,7 +46,9 @@ function saveBotData(state) {
       kills: state.crystalled || 0, 
       deaths: totalDeaths,
       topKills: state.crystal_kills || {},
+      marriages: state.marriages || {},
       lastUpdate: new Date().toISOString()
+      
     };
 
     const outputDir = path.join(__dirname, 'output');
