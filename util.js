@@ -50,14 +50,16 @@ function saveBotData(state) {
   const outputDir = path.join(__dirname, 'output');
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
+  const filePath = path.join(outputDir, 'bot_data.json');
+
   fs.writeFileSync(
-    path.join(outputDir, 'bot_data.json'),
+    filePath,
     JSON.stringify(data, null, 2)
   );
-    
-  const filePath = path.join(outputDir, 'bot_data.json');  
+
   console.log(`[Bot] Saved bot_data.json at: ${filePath}`);
 }
+
 
 function startAutoSave(state, intervalMs = 5 * 60 * 1000) {
   setInterval(() => saveBotData(state), intervalMs);
@@ -274,5 +276,6 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
 
 
