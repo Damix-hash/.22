@@ -1,275 +1,253 @@
-// utils.js
-const fs = require('fs');
-const path = require('path');
+// events.js
+module.exports = function(bot, state) {
+    let {
+        spam_messages,
+        blacklisted_messages,
+        return_user,
+        checkSpam,
+        whitelisted_users,
+        admin_commands,
+        public_commands,
+        responses,
+        PASSWORD,
+        welcomer,
+    } = state;
 
-let startTime = Date.now();
+    bot.on('spawn', () => {
+        state.spawnedIn += 1;
 
-const spam_count = {};
-const temp_blacklist = new Map();
-const spam_offenses = {};
-const whitelist = ['Damix2131', 'q33a', 'ryk_cbaool',
-    'Abottomlesspit', 'MioAutoCrystal', 'NIKASTEIN'];
+        if (!state.tips_started && state.spawnedIn == 2) {
+            let tipIndex = 0;
+            state.tips_started = true
+            setInterval(() => {
+                if (spam_messages.length === 0) return;
 
+                bot.chat(spam_messages[tipIndex]);
+                tipIndex = (tipIndex + 1) % spam_messages.length;
+                state.bot_tips_sent++;
+            }, 180000); // every 3 minutes
+        }
+    });
 
-function loadBotData(state) {
-  try {
-    const inputPath = path.join(__dirname, 'output', 'bot_data.json');
-    if (fs.existsSync(inputPath)) {
-      const jsonData = fs.readFileSync(inputPath, 'utf8');
-      const data = JSON.parse(jsonData);
+    bot.on("playerCollect", async (collector, collected) => {
+        if (collector.username === bot.username) {
+            const inventory = bot.inventory.items();
+            for (const item of inventory) {
+                await bot.tossStack(item);
+            }
+        }
+    });
 
-      state.quotes = data.quotes || {};
-      state.crystalled = data.kills || 0;
-      state.crystal_deaths = data.crystal_deaths || {};
-      state.crystal_kills = data.crystal_kills || {};
-      state.deaths = data.deaths || 0;
-      state.topKills = data.topKills || {};
+    bot.on('login', () => {
+        console.log('Logged In');
+        bot.setControlState("forward", true);
+        bot.setControlState("jump", true);
+    });
 
-      console.log('[Bot] Loaded bot_data.json');
-    } else {
-      console.log('[Bot] No bot_data.json found, starting fresh');
-    }
-  } catch (err) {
-    console.error('[Bot] Failed to load bot_data.json:', err);
-  }
-}
+    bot.on('bossBarCreated', async (bossBar) => {
+        const bossBar_text = bossBar?.title?.text;
 
-function saveBotData(state) {
-  const totalDeaths = Object.values(state.crystal_victims || {}).reduce((a, b) => a + b, 0);
+        if (state.auto_tp) state.auto_tp = false;
 
-  const data = {
-    quotes: state.quotes || {},
-    crystal_kills: state.crystal_kills || {},
-    crystal_victims: state.crystal_victims || {},
-    kills: state.crystalled || 0, 
-    deaths: totalDeaths,
-    topKills: state.crystal_kills || {},
-    lastUpdate: new Date().toISOString()
-  };
+        if (typeof bossBar_text === "string" && bossBar_text.includes("teleport with /hotspot") && state.scan_hotspot) {
+            bot.chat("/hotspot");
+            setTimeout(() => {
+                const pos = bot.entity.position;
+                const info = `${Math.floor(pos.x)}.X, ${Math.floor(pos.y)}.Y, ${Math.floor(pos.z)}.Z in minecraft:${bot.game.dimension}`;
+                state.safeChat(`Hotspot Located At: ${info}`, bot);
+                state.hotspot_death = true;
+                bot.chat("/kill");
+                state.hotspot_death = false;
+            }, 10750);
+        }
+    });
 
-  const outputDir = path.join(__dirname, 'output');
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+    bot.on("death", () => {
+        console.log("Died!");
+        bot.clearControlStates(); // Planned to make it more human, but meh
+        bot.setControlState("forward", true);
+        bot.setControlState("jump", true);
 
-  fs.writeFileSync(
-    path.join(outputDir, 'bot_data.json'),
-    JSON.stringify(data, null, 2)
-  );
+        if (!state.hotspot_death) {
+            state.deaths++;
+        }
+    });
 
-  console.log('[Bot] Saved bot_data.json');
-}
+    bot.on('messagestr', (message) => {
+        const username = return_user(message);
+        let command = message.split('» ')[1] || message.split("whispers: ")[1] || '';
 
-function startAutoSave(state, intervalMs = 5 * 60 * 1000) {
-  setInterval(() => saveBotData(state), intervalMs);
+        if (state.spawnedIn < 2) {
+            if (!state.loggedIn) {
+                if (message.includes("/login")) {
+                    bot.chat(`/login ${PASSWORD}`);
+                    state.loggedIn = true;
+                } else if (message.includes("/register")) {
+                    bot.chat(`/register ${PASSWORD}`);
+                    state.loggedIn = true;
+                }
+            }
+            return;
+        }
 
-  process.on('SIGINT', () => {
-    saveBotData(state);
-    process.exit();
-  });
-  process.on('SIGTERM', () => {
-    saveBotData(state);
-    process.exit();
-  });
-}
+        if (state.spawnedIn >= 2 && !blacklisted_messages.some(blk => message.includes(blk)) && message.trim() !== '') {
+            console.log(message);
+        }
 
-function get_uptime() {
-  const now = Date.now();
-  const uptime = now - startTime;
+        if (!state.quotes[username]) state.quotes[username] = [];
+        if (message.includes('»')) state.quotes[username].push(message.trim());
 
-  const totalSeconds = Math.floor(uptime / 1000);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
+        if (state.auto_tp) {
+            const teleport = ['tp', 'come', 'teleport', 'give me'];
+            if (teleport.some(word => command.toLowerCase().includes(word)) && !command.includes("http")) {
+                console.log("Teleporting to", username);
+                bot.chat(`/tpa ${username}`);
+            }
+        }
 
-  return `${hours}h ${minutes}m ${seconds}s`;
-}
+        if (state.loggedIn && state.spawnedIn >= 2) {
+            if (command.startsWith("<Malachite>")) {
+                command = command.replace("<Malachite>", "").replace("</Malachite>", "");
+            }
 
-function random_element(arr) {
-  return String(arr[Math.floor(Math.random() * arr.length)]);
-}
+            if (command.startsWith(state.prefix)) {
+                let cmd = command.split(" ")[0]
 
-function createRandomString(length) {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-}
+                if (state.temp_blacklist.has(username)) return;
+                if (checkSpam(bot, username)) return;
+                if (message.includes('discord') || message.includes("join")) return;
+                
+                if (whitelisted_users(username)) {
+                    if (admin_commands.hasOwnProperty(cmd)) {
+                        admin_commands[cmd](username, command, bot, state);
+                    }
+                }
 
-function safeChat(msg) {
-  return `${msg} ${createRandomString((Math.floor(Math.random() * 5))+5)}`
-}
+                if (public_commands.hasOwnProperty(cmd)) {
+                    public_commands[cmd](username, command, bot, state)
+                }
+            }
+        }
 
-function get_random_ip() {
-  const array = [];
-  for (let i = 0; i < 4; i++) {
-    array.push(Math.floor(Math.random() * 256));
-  }
-  const [a, b, c, d] = array;
-  return `${a}.${b}.${c}.${d}`;
-}
+        if (message.includes('dsc.gg') || message.includes('discord.gg')) {
+            state.ads_seen++;
+        }
 
-function getIndefiniteArticle(word) {
-  if (!word) return '';
-  return /^[aeiou]/i.test(word) ? 'an' : 'a';
-}
+        if (message.includes('dupe') && !(message.includes('dsc.gg') || message.includes('discord.gg')) ) {
+            state.dupe_mentioned++;
+        }        
+        
+        if (message.includes("Server restarts in") && !message.includes('»')) {
+            // Server restarts in 25200s
+            if (state.server_restart === 0) {
+                state.server_restart = Number(message.split('Server restarts in ')[1].replace('s', '').trim())
+                
+                setInterval(() => {
+                    state.server_restart--;
+                }, 1000)
+            }
+        }
 
-/**
- * General handler for "percent" style commands
- * Example output: "player is 73% gay"
- * options:
- * - status: fixed string status to output instead of percent
- * - customMessage: a function (user, cmd) => string for full custom message
- * - isRating: if true, percent is 1-10 instead of 0-100
- * - useArticle: add indefinite article ("a" or "an") before command name
- */
-function handlePercentCmd(user, prefix, message, bot, state, options = {}) {
-  const [fullCmd, ...rest] = message.trim().split(/\s+/);
-  const cmd = fullCmd.replace(prefix, '').toLowerCase();
-  let args = rest.join(' ');
+        // cooldown
 
-  if (!args || args.trim() === '') args = user;
+        if ((message.includes('Please wait') && message.includes('seconds before sending another message!')) && !message.includes('»')) {
+            let seconds_of_cooldown = parseInt(message.split('Please wait ')[1].split('seconds before sending another message!')[0].replace('s', ''))
+            state.cooldown = seconds_of_cooldown
 
-  if (args.toLowerCase() === 'random') {
-    const players = Object.keys(bot.players);
-    if (players.length > 0) {
-      args = state.random_element(players);
-    } else {
-      args = user;
-    }
-  }
+            if (!state.longest_cooldown || seconds_of_cooldown > state.longest_cooldown) {
+                state.longest_cooldown = seconds_of_cooldown;
+            }            
+        }
 
-  if (options.status) {
-    return state.safeChat(`${args} is ${options.status}`);
-  }
+        if (message.includes("died") && !message.includes('»')) {
+            state.global_deaths++;
 
-  if (options.customMessage) {
-    return state.safeChat(options.customMessage(args, cmd));
-  }
+            if (message.includes('vined_on_top')) {
+                state.vined_on_top_deaths++;
+            }
 
-  let value = Math.floor(Math.random() * 101);
-  if (options.isRating) {
-    value = Math.floor(Math.random() * 10) + 1;
-  }
+            if (message.includes('i_am_vined')) {
+                state.i_am_vined_deaths++;
+            }
 
-  let article = '';
-  if (options.useArticle) {
-    article = getIndefiniteArticle(cmd) + ' ';
-  }
+            if (message.includes('Damix2131')) {
+                state.damix_deaths++;
+            }
+        }
 
-  return state.safeChat(`${args} is ${article}${value}% ${cmd}`);
-}
+        if (message.includes("using an end crystal") && !message.includes('»')) {
+            const get_killer = message.split("by ")[1].split(" using")[0].trim();
+            const get_victim = message.split(" was")[0].trim();
 
-function handleTargetCommand(user, prefix, message, bot, state, label, usage, chatMessageFn) {
-  let args = message.split(`${prefix}${label} `)[1];
+            state.crystalled++;
+            state.global_deaths++;
 
-  if (args && args.toLowerCase() === 'random') {
-    const players = Object.keys(bot.players);
-    args = state.random_element(players);
-  }
+            if (get_killer !== get_victim) {
+                state.crystal_kills[get_killer] = (state.crystal_kills[get_killer] || 0) + 1;
+                state.crystal_deaths[get_victim] = (state.crystal_deaths[get_victim] || 0) + 1;
+            }
+        }
 
-  if (!args || args.trim().length === 0) {
-    return bot.chat(state.safeChat(`Usage: ${prefix}${label} ${usage}`));
-  }
+        if (message.includes("/tpy")) {
+            if (message.includes("Damix2131")) {
+                bot.chat(`/tpy Damix2131`);
+            } else {
+                const decline_username = message.split(' wants to teleport to you.')[0]
+                bot.chat(`/tpn ${decline_username}`);
+            }
+        }
 
-  const msg = chatMessageFn(user, args);
-  return bot.chat(state.safeChat(msg));
-}
+        for (const response in responses) {
+            if (message.includes(response) || command.includes(response)) {
+                responses[response](message);
+            }
+        }
 
-function get_kd(target, state) {
-  const hasKills = state.crystal_kills.hasOwnProperty(target);
-  const hasDeaths = state.crystal_deaths.hasOwnProperty(target);
+        if (message.includes("joined") && !message.includes('»')) {
+            let joined_user = message.split(" joined")[0]
 
-  if (hasKills || hasDeaths) {
-    const kills = state.crystal_kills[target] || 0;
-    const deaths = state.crystal_deaths[target] || 0;
-    const kd = deaths === 0 ? kills : (kills / deaths).toFixed(2);
+            if (welcomer && !message.includes(bot.username)) {
+                const player = message.split("joined")[0].trim();
+                console.log(`Player ${player} currently joined.`);
+                bot.chat(`/whisper ${player} Welcome to 6b6t.org ${player}!`);
+            }
+            if (message.includes('the game for the first time')) {
+                state.newest_player = true
+            } else {
+                state.newest_player = false
+            }
 
-    return `${target} has ${kills} kill${kills !== 1 ? 's' : ''} and ${deaths} death${deaths !== 1 ? 's' : ''}. KD: ${kd}`
-  } else {
-    return `Player ${target} has no recorded kills or deaths.`
-  }
-}
+            state.recent_join = joined_user
+            state.joined++;
+        }
 
-function return_user(msg) {
-  let no_rank_message = '';
-  let get_username = '';
+        if (message.includes("quit") && !message.includes('»')) {
+            let quitted_user = message.split(" quit")[0]     
+            state.recent_quit = quitted_user       
+            state.quitted++;
+        }
+    });
 
-  if (msg.startsWith('[')) {
-    no_rank_message = msg.split(']')[1];
-    get_username = no_rank_message.split('»')[0];
-  } else if (msg.includes('whispers')) {
-    get_username = msg.split('whispers')[0];
-  } else {
-    get_username = msg.split('»')[0];
-  }
+    bot.on('kicked', (reason) => {
+        console.log('[Kicked]', reason);
+    });
 
-  return get_username?.trim() || '';
-}
+    bot.on('end', (reason) => {
+        console.log('[Disconnected]', reason);
+        if (state.restart) {
+            state.loggedIn = false;
+            state.spawnedIn = 0;
+            setTimeout(() => global.startup(), 10000);
+        }
+    });
 
-function whitelisted_users(user) {
-  return whitelist.includes(user.trim());
-}
-
-function blacklist(bot, user) {
-  if (temp_blacklist.has(user)) return;
-
-  if (!spam_offenses[user]) spam_offenses[user] = 1;
-  else spam_offenses[user]++;
-
-  if (spam_offenses[user] >= 6) spam_offenses[user] = 6;
-
-  const minutes = spam_offenses[user] * 5;
-  const duration = minutes * 60 * 1000;
-
-  temp_blacklist.set(user, true);
-  bot.whisper(user, `Blacklisted for spamming (${minutes} minutes).`);
-
-  setTimeout(() => {
-    temp_blacklist.delete(user);
-    bot.whisper(user, "You're no longer blacklisted.");
-  }, duration);
-}
-
-function checkSpam(bot, user) {
-  if (!spam_count[user]) {
-    spam_count[user] = 1;
-  } else {
-    spam_count[user]++;
-  }
-
-  setTimeout(() => {
-    if (spam_count[user]) {
-      spam_count[user]--;
-      if (spam_count[user] <= 0) delete spam_count[user];
-    }
-  }, 5000);
-
-  if (spam_count[user] >= 5) {
-    spam_count[user] = 0;
-    blacklist(bot, user);
-    return true;
-  }
-  return false;
-}
-
-module.exports = {
-  get_uptime,
-  random_element,
-  get_random_ip,
-  return_user,
-  whitelisted_users,
-  blacklist,
-  checkSpam,
-  get_kd,
-  safeChat,
-  handlePercentCmd,
-  handleTargetCommand,
-  saveBotData,
-  startAutoSave,
-  loadBotData,
-  spam_count,
-  temp_blacklist,
-  spam_offenses,
-  whitelist,
+    bot.on('error', (err) => {
+        console.error('[Bot Error]', err);
+        if (err.code === 'ECONNREFUSED' || err.message.includes('timed out')) {
+            console.log('Attempting to reconnect...');
+            setTimeout(() => global.startup(), 10000);
+        }
+    });
 };
+
+
