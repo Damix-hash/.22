@@ -1,5 +1,5 @@
 // index.js
-//require('dotenv').config();
+// require('dotenv').config();
 
 const mineflayer = require('mineflayer');
 const tpsPlugin = require('mineflayer-tps')(mineflayer);
@@ -105,6 +105,7 @@ function startup() {
             "Futa", "Femboys", "Monster girls", "Slime girls", "Giantess", "Robots", "Pet play", "Yandere roleplay",
             "Cosplay kink", "Age regression (non-sexual)", "Gender play", "Crossdressing", "Objectification",
             "DILFs", "MILFs", "Clowns", "Nuns", "Maids", "Neko play", "Bunny girls", "Goblins", "Fairies",
+            "Goth Latina Mommy",
         
             // Power dynamics / BDSM
             "Dom/sub dynamics", "Bondage", "Sadism", "Masochism", "Choking", "Breathplay", "Wax play",
