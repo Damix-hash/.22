@@ -220,25 +220,28 @@ const public_commands = {
     },
 
     [`${prefix}cringe`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}swedish`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}european`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}white`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}aryan`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}nazi`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}gooner`]: (user, message, bot, state) =>
-        bot.chat(bot.chat(state.handlePercentCmd(user, prefix, message, bot, state))),
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
+
+    [`${prefix}clown`]: (user, message, bot, state) =>
+        bot.chat(state.handlePercentCmd(user, prefix, message, bot, state)),
 
     [`${prefix}cap`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}cap `)[1];
@@ -256,6 +259,7 @@ const public_commands = {
             bot.chat(state.safeChat(`${user}: ${result}`));
         }
     },
+
     [`${prefix}gender`]: (user, message, bot, state) => {
         let args = message.split(`${prefix}gender `)[1];
         const result = state.random_element(state.gender_results);
@@ -330,6 +334,21 @@ const public_commands = {
             bot.chat(state.safeChat(`${args}'s fetish is: ${randomFetish}`));
         } else {
             bot.chat(state.safeChat(`${user}'s fetish is: ${randomFetish}`));
+        }
+    },
+
+    [`${prefix}shower`]: (user, message, bot, state) => {
+        let args = message.split(`${prefix}shower `)[1];
+        const days = Math.floor(Math.random() * 365)
+        
+        if (args && args.trim().length > 0) {
+            if (args === 'random') {
+                const players = Object.keys(bot.players);
+                args = state.random_element(players);
+            }            
+            bot.chat(state.safeChat(`${args} has showered last time ${days} days ago`));
+        } else {
+            bot.chat(state.safeChat(`${user} has showered last time ${days} days ago`));
         }
     },
 
@@ -625,6 +644,11 @@ const admin_commands = {
     //   bot.chat(state.safeChat(`Hotspot logger is now ${scan_hotspot ? "ON" : "OFF"}!`);
     // },
 
+    [`${prefix}forcesave`]: (user, message, bot, state) => {
+        if (user === 'Damix2131') {
+            state.saveBotData(state)
+        }
+    },
 
     [`${prefix}debug`]: (user, message, bot, state) => {
         const args = message.split(`${prefix}debug `)[1];
