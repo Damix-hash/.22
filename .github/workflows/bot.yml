@@ -8,7 +8,7 @@ on:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 10    # <-- stops job after 10 minutes max
+    timeout-minutes: 12
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
     steps:
@@ -22,8 +22,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
       
-      - name: Run Bot
-        run: npm start
+      - name: Run Bot for 10 minutes then stop
+        run: |
+          npm start &
+          BOT_PID=$!
+          sleep 600
+          kill -SIGTERM $BOT_PID
+          wait $BOT_PID || true
 
       - name: Upload bot_data artifact
         uses: actions/upload-artifact@v4
