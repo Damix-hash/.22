@@ -1,38 +1,32 @@
-name: .22 Bot
+name: .22 Bot Debug
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
   workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *' # every 15 minutes for quick testing (you can adjust)
 
 jobs:
-  run-bot:
+  run-bot-debug:
     runs-on: ubuntu-latest
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
-      - name: Install Dependencies
+
+      - name: Install dependencies
         run: npm install
-      
-      - name: Run Bot
+
+      - name: Run bot (no timeout)
         run: npm start
 
-  deploy-firebase:
-    needs: run-bot  # run deploy after bot run finishes
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Upload bot_data artifact
+        uses: actions/upload-artifact@v4
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          channelId: live
+          name: bot_data
+          path: ./output/bot_data.json
