@@ -1,14 +1,12 @@
-name: .22 Bot Debug Minimal
+name: .22 Bot Auto 5min Debug to Archive
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/15 * * * *'  # every 15 minutes
 
 jobs:
-  run-bot-debug:
+  run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 6  # max job runtime (6 mins)
+    timeout-minutes: 10  # safety buffer
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
     steps:
@@ -23,33 +21,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run bot for 4 minutes then stop
+      - name: Run bot for 5 minutes then stop
         run: |
           npm start &
           BOT_PID=$!
           echo "Bot started with PID $BOT_PID"
-          sleep 240  # run bot for 4 minutes
+          sleep 300  # 5 minutes
           echo "Stopping bot"
           kill $BOT_PID
           wait $BOT_PID || true
 
-      - name: List all files in root directory
-        run: ls -lR . || echo "Failed to list root directory"
-
-      - name: List files in output folder
-        run: ls -l ./output || echo "Output folder does not exist"
-
-      - name: Check bot_data.json existence and details
+      - name: Clone archive repo
         run: |
-          if [ -f ./output/bot_data.json ]; then
-            echo "bot_data.json found:"
-            ls -l ./output/bot_data.json
-          else
-            echo "bot_data.json NOT found"
-          fi
+          git clone https://x-access-token:${{ secrets.STORAGE_REPO_TOKEN }}@github.com/Damix-hash/.22-archive.git archive-repo
 
-      - name: Upload bot_data artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: bot_data
-          path: ./output/bot_data.json
+      - name: Copy output files to archive repo
+        run: |
+          mkdir -p archive-repo/output
+          cp -r output/* archive-repo/output/ || echo "No output files to copy"
+
+      - name: Commit and push to archive repo
+        run: |
+          cd archive-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/
+          git commit -m "Debug autosave from bot run [ci skip]" || echo "No changes to commit"
+          git push origin main
