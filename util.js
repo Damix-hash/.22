@@ -55,7 +55,7 @@ function saveBotData(state) {
     JSON.stringify(data, null, 2)
   );
 
-  console.log('[Bot] Saved bot_data.json');
+    console.log(`[Bot] Saved bot_data.json at: ${filePath}`);
 }
 
 function startAutoSave(state, intervalMs = 5 * 60 * 1000) {
@@ -273,3 +273,4 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
