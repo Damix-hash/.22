@@ -56,7 +56,10 @@ npm install
 
 ```bash
 export MC_PASSWORD="your_password"
+export STORAGE_REPO_TOKEN="your_PAT_token"
 ```
+More about P.A.T (Personal Access Token) on github read [here.](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+You also need to initiate your own project path for archiving data, or just code your own
 
 2. Start the bot:
 
