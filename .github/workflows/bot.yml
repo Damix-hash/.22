@@ -3,7 +3,7 @@ name: .22 Bot Debug
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *' # every 15 minutes for quick testing (you can adjust)
+    - cron: '*/5 * * * *' # every 15 minutes for quick testing (you can adjust)
 
 jobs:
   run-bot-debug:
