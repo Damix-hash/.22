@@ -1,4 +1,4 @@
-name: .22 Bot Auto 6h Run to Archive
+name: .22 Main Bot
 
 on:
   workflow_dispatch:
