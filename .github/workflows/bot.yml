@@ -8,6 +8,7 @@ on:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    timeout-minutes: 10    # <-- stops job after 10 minutes max
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
     steps:
