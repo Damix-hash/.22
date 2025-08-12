@@ -23,26 +23,29 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run bot for 6 hours then stop
+      - name: Run bot for ~6 hours then stop
         run: |
           npm start &
           BOT_PID=$!
           echo "Bot started with PID $BOT_PID"
-          sleep $((6 * 60 * 60))  # 6 hours
+          sleep $((355 * 60))  # 5h 55m
           echo "Stopping bot"
           kill $BOT_PID
           wait $BOT_PID || true
 
       - name: Clone archive repo
+        if: always()
         run: |
           git clone https://x-access-token:${{ secrets.STORAGE_REPO_TOKEN }}@github.com/Damix-hash/.22-archive.git archive-repo
 
       - name: Copy output files to archive repo
+        if: always()
         run: |
           mkdir -p archive-repo/output
           cp -r output/* archive-repo/output/ || echo "No output files to copy"
 
       - name: Commit and push to archive repo
+        if: always()
         run: |
           cd archive-repo
           git config user.name "github-actions[bot]"
