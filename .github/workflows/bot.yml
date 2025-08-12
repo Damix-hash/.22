@@ -6,7 +6,7 @@ on:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # 5m run + upload + restart buffer
+    timeout-minutes: 15
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
       STORAGE_REPO_TOKEN: ${{ secrets.STORAGE_REPO_TOKEN }}
@@ -23,6 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Clone archive repo (to restore previous data)
+        run: |
+          git clone https://x-access-token:${{ secrets.STORAGE_REPO_TOKEN }}@github.com/Damix-hash/.22-archive.git archive-repo
+          mkdir -p output
+          cp -r archive-repo/output/* output/ || echo "No previous output files to restore"
+
       - name: Run bot for 5 minutes then stop
         run: |
           npm start &
@@ -33,29 +39,21 @@ jobs:
           kill $BOT_PID
           wait $BOT_PID || true
 
-      - name: Clone archive repo
-        if: always()
-        run: |
-          git clone https://x-access-token:${{ secrets.STORAGE_REPO_TOKEN }}@github.com/Damix-hash/.22-archive.git archive-repo
-
-      - name: Copy output files to archive repo
-        if: always()
+      - name: Copy output files to archive repo (update archive)
         run: |
           mkdir -p archive-repo/output
           cp -r output/* archive-repo/output/ || echo "No output files to copy"
 
       - name: Commit and push to archive repo
-        if: always()
         run: |
           cd archive-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add output/
-          git commit -m "Debug autosave from bot run [ci skip]" || echo "No changes to commit"
+          git commit -m "Autosave bot_data.json from bot run [ci skip]" || echo "No changes to commit"
           git push origin main
 
       - name: Re-trigger this workflow (self-restart)
-        if: always()
         env:
           PAT: ${{ secrets.MAIN_REPO_PAT }}
         run: |
