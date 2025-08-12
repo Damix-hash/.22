@@ -1,4 +1,4 @@
-name: .22 Bot Auto 5min Debug to Archive
+name: .22 Bot Auto 5min Debug (Self-Restart)
 
 on:
   workflow_dispatch:
@@ -6,9 +6,11 @@ on:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # 5m run + buffer
+    timeout-minutes: 15  # 5m run + upload buffer
     env:
       MC_PASSWORD: ${{ secrets.MC_PASSWORD }}
+      STORAGE_REPO_TOKEN: ${{ secrets.STORAGE_REPO_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -51,3 +53,9 @@ jobs:
           git add output/
           git commit -m "Debug autosave from bot run [ci skip]" || echo "No changes to commit"
           git push origin main
+
+      - name: Trigger workflow again
+        if: always()
+        run: |
+          echo "Re-triggering workflow..."
+          gh workflow run ".22 Bot Auto 5min Debug (Self-Restart)"
