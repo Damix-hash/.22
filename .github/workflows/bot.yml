@@ -63,5 +63,5 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $PAT" \
-            https://api.github.com/repos/Damix-hash/.22/actions/workflows/.22%20Bot%20Auto%205min%20Debug%20(Self-Restart).yml/dispatches \
+            "https://api.github.com/repos/Damix-hash/.22/actions/workflows/.22%20Bot%20Auto%205min%20Debug%20%28Self-Restart%29.yml/dispatches" \
             -d '{"ref":"main"}'
