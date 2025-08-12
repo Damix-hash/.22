@@ -1,4 +1,4 @@
-name: .22 Bot Auto 5min Debug (Self-Restart)
+name: 22bot
 
 on:
   workflow_dispatch:
@@ -63,5 +63,5 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $PAT" \
-            "https://api.github.com/repos/Damix-hash/.22/actions/workflows/.22%20Bot%20Auto%205min%20Debug%20%28Self-Restart%29.yml/dispatches" \
+            https://api.github.com/repos/Damix-hash/.22/actions/workflows/bot.yml/dispatches \
             -d '{"ref":"main"}'
