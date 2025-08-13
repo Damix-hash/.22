@@ -13,6 +13,8 @@
 ![Response Time](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/response-times/24h/badge.svg)
 ![Health](https://status.6b6t.org/api/v1/endpoints/minecraft_server-public/health/badge.svg)
 
+### Credits to ryk_cbaool for part of the code.
+
 `.22` is a feature-rich Mineflayer bot designed for chaotic Minecraft servers like **6b6t.org**.
 It offers server stats, utilities, fun commands, and admin tools — all while avoiding coordinate leaks.
 
