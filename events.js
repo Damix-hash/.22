@@ -239,7 +239,7 @@ module.exports = function(bot, state) {
             }
         }
 
-        f (message.includes("/tpy")) {
+        if (message.includes("/tpy")) {
             if (message.includes("ryk_cbaool")) {
                 bot.chat(`/tpy ryk_cbaool`);
             } else {
@@ -300,6 +300,7 @@ module.exports = function(bot, state) {
         }
     });
 };
+
 
 
 
