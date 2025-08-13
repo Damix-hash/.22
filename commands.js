@@ -615,6 +615,17 @@ const public_commands = {
         bot.chat(state.safeChat(`${user} and ${requester} are now divorced.`));
     },
     
+    [`${prefix}coords`]: (user, message, bot, state) => {
+        const x_minus = Math.random() > 0.5 ? "-" : ""
+        const z_minus = Math.random() > 0.5 ? "-" : ""
+
+        const x_coord = Math.floor(Math.random() * 30_000_000)
+        const y_coord = Math.floor((Math.random() * 10)+60)          
+        const z_coord = Math.floor(Math.random() * 30_000_000)        
+
+        bot.chat(state.safeChat(`Go to ${x_minus}${x_coord} X, ${y_coord} Y, ${z_minus}${z_coord} Z for an suprise.`))
+    },
+
     [`${prefix}longestcd`]: (user, message, bot, state) => {
         if (state.longest_cooldown) {
             bot.chat(state.safeChat(`Longest cooldown so far: ${state.longest_cooldown} seconds.`));
@@ -792,4 +803,3 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
-
