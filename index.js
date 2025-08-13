@@ -126,6 +126,7 @@ function startup() {
             "Body modification", "Zombie attraction", "Monster transformation", "Amputee attraction",
             "Food play", "Plushophilia", "Guro (non-visual)", "Size difference", "Stomping", "Giant robots"
         ],
+
         gender_results: [
             "Male", "Female", "Attack Helicopter", "Goofy", "None", "Yes", "All of them"
         ],
@@ -245,6 +246,8 @@ function startup() {
         }
     };
 
+    console.log('${PASSWORD}');
+
     // Load commands and assign to state
     const { public_commands, admin_commands } = require('./commands');
     state.public_commands = public_commands;
@@ -261,5 +264,6 @@ function startup() {
 }
 
 startup();
+
 
 
