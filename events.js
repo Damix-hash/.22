@@ -167,6 +167,7 @@ module.exports = function(bot, state) {
 
                 if (public_commands.hasOwnProperty(cmd)) {
                     public_commands[cmd](username, command, bot, state)
+                    stats.bot_uses++
                 }
             }
         }
@@ -300,6 +301,7 @@ module.exports = function(bot, state) {
         }
     });
 };
+
 
 
 
