@@ -95,8 +95,11 @@ module.exports = function(bot, state) {
         }
 
         if (message.includes('»')) {
+            const blacklist = ["moooomoooo", "7thSealBot", ".22", "kazwqi", "KaizBot", "KitBot1"];
+            if (blacklist.includes(username.toLowerCase())) return; // case-insensitive check
+        
             const msgLower = message.toLowerCase();
-
+            
             const isAd =
                 msgLower.includes("join ") ||
                 msgLower.includes("subscribe") ||
@@ -108,33 +111,30 @@ module.exports = function(bot, state) {
                 msgLower.includes(".org") ||
                 msgLower.includes(".uk") ||
                 /\b\d{1,3}(\.\d{1,3}){3}\b/.test(msgLower);
-
+        
             const isCommand = msgLower.startsWith('-') || msgLower.startsWith('/');
-
+        
             let cleanedMessage = message.replace(/^\[[^\]]+\]\s*/, '');
-
             cleanedMessage = cleanedMessage.replace(/<\/?Malachite>/g, '');
-
+        
             const msgText = cleanedMessage.split('» ')[1] || '';
-
             if (!isAd && !isCommand && /^[\x00-\x7F\s.,'?!\-":;()0-9]+$/.test(msgText)) {
                 if (!state.quotes[username]) state.quotes[username] = [];
-
-                let isDuplicate = false;
-                if (state.quotes[username].length > 0) {
-                    const lastQuote = state.quotes[username][state.quotes[username].length - 1];
-                    const lastMessage = lastQuote.substring(lastQuote.indexOf('>') + 2);
-                    isDuplicate = lastMessage === cleanedMessage.trim();
-                }
-
-                if (!isDuplicate) {
-                    const now = new Date();
-                    const date = now.toISOString().slice(0, 10);
-                    const time = now.toTimeString().slice(0, 5);
-                    const timestamp = `${date} ${time}`;
-
-                    state.quotes[username].push(`<${timestamp}> ${cleanedMessage.trim()}`);
-                }
+        
+                const newMsg = cleanedMessage.trim();
+                const lastFew = state.quotes[username].slice(-5);
+                const alreadyExistsRecently = lastFew.some(q => {
+                    const existingMsg = q.substring(q.indexOf('>') + 2).trim();
+                    return existingMsg.toLowerCase() === newMsg.toLowerCase();
+                });
+                if (alreadyExistsRecently) return;
+        
+                const now = new Date();
+                const date = now.toISOString().slice(0, 10);
+                const time = now.toTimeString().slice(0, 5);
+                const timestamp = `${date} ${time}`;
+        
+                state.quotes[username].push(`<${timestamp}> ${newMsg}`);
             }
         }
 
@@ -300,6 +300,7 @@ module.exports = function(bot, state) {
         }
     });
 };
+
 
 
 
