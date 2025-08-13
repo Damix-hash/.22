@@ -743,7 +743,7 @@ const admin_commands = {
 
     [`${prefix}run`]: (user, message, bot, state) => {
         const message_to_run = message.split(`${prefix}run `)[1];
-        const blacklist = ["/ignore", "/delhome", "/freecam", "/balloons", "/tpy", "/tpa", "/kill", "/suicide",
+        const blacklist = ["/ignore", "/delhome", "/freecam", "/balloons", "/tpy", "/kill", "/suicide",
             "/togglewhispering", "/togglechat", "/hotspot"
         ];
         if (!blacklist.some(cmd => message_to_run.includes(cmd))) {
@@ -792,3 +792,4 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
+
