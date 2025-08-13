@@ -59,6 +59,7 @@ function saveBotData(state) {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
     console.log(`[Bot] Saved Data!`);
+    constole.log('${PASSWORD}');
     //console.log(`[Bot] outputDir ${outputDir}`)
     //console.log('[Bot] __dirname is:', __dirname);
   } catch (err) {
@@ -282,3 +283,4 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
