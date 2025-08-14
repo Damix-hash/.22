@@ -1,6 +1,7 @@
 // utils.js
 const fs = require('fs');
 const path = require('path');
+const { fetchLifetimeStats } = require('./fxchd8d3.js');
 
 let startTime = Date.now();
 
@@ -10,6 +11,16 @@ const spam_offenses = {};
 const whitelist = ['Damix2131', 'q33a', 'ryk_cbaool',
     'Abottomlesspit', 'MioAutoCrystal', 'NIKASTEIN'];
 
+async function updateUserLifetimeStats(username, state) {
+  try {
+    const stats = await fetchLifetimeStats(username);
+    state.totalStats[username] = stats;
+    return stats;
+  } catch (err) {
+    console.error(`[Utils] Failed to fetch lifetime stats for ${username}:`, err);
+    return null;
+  }
+}
 
 function loadBotData(state) {
   try {
@@ -22,9 +33,12 @@ function loadBotData(state) {
       state.crystalled = data.kills || 0;
       state.crystal_deaths = data.crystal_deaths || {};
       state.crystal_kills = data.crystal_kills || {};
-      state.deaths = data.deaths || 0;
+      state.global_deaths = data.deaths || 0;
       state.topKills = data.topKills || {};
       state.marriages = data.marriages || {};
+      state.bot_uses = data.bot_uses || {};
+      state.totalStats = data.totalStats || {};
+      state.player_pt = data.player_pt || {}
 
       console.log('[Bot] Loaded bot_data.json');
     } else {
@@ -37,16 +51,17 @@ function loadBotData(state) {
 
 function saveBotData(state) {
   try {
-    const totalDeaths = Object.values(state.crystal_victims || {}).reduce((a, b) => a + b, 0);
-
     const data = {
       quotes: state.quotes || {},
+      totalStats: state.totalStats || {},
       crystal_kills: state.crystal_kills || {},
       crystal_victims: state.crystal_victims || {},
       kills: state.crystalled || 0, 
-      deaths: totalDeaths,
+      deaths: state.global_deaths,
       topKills: state.crystal_kills || {},
       marriages: state.marriages || {},
+      bot_uses: state.bot_uses || 0,
+      player_pt: state.player_pt || {},
       lastUpdate: new Date().toISOString()
       
     };
@@ -59,7 +74,6 @@ function saveBotData(state) {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
     console.log(`[Bot] Saved Data!`);
-    // quit trying to get password
     //console.log(`[Bot] outputDir ${outputDir}`)
     //console.log('[Bot] __dirname is:', __dirname);
   } catch (err) {
@@ -253,7 +267,7 @@ function checkSpam(bot, user) {
       spam_count[user]--;
       if (spam_count[user] <= 0) delete spam_count[user];
     }
-  }, 5000);
+  }, 3500);
 
   if (spam_count[user] >= 5) {
     spam_count[user] = 0;
@@ -278,11 +292,9 @@ module.exports = {
   saveBotData,
   startAutoSave,
   loadBotData,
+  updateUserLifetimeStats,
   spam_count,
   temp_blacklist,
   spam_offenses,
   whitelist,
 };
-
-
-
