@@ -1,7 +1,6 @@
 // utils.js
 const fs = require('fs');
 const path = require('path');
-const { fetchLifetimeStats } = require('./fxchd8d3.js');
 
 let startTime = Date.now();
 
@@ -298,3 +297,4 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
