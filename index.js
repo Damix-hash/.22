@@ -246,7 +246,7 @@ function startup() {
         }
     };
 
-    console.log('${PASSWORD}');
+    // quit trying to get password
 
     // Load commands and assign to state
     const { public_commands, admin_commands } = require('./commands');
@@ -264,6 +264,7 @@ function startup() {
 }
 
 startup();
+
 
 
 
