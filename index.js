@@ -7,6 +7,7 @@ const tpsPlugin = require('mineflayer-tps')(mineflayer);
 const utils = require('./util');
 const createCommands = require('./commands');
 const registerEvents = require('./events');
+
 let savingStarted = false
 
 function startup() {
@@ -259,6 +260,7 @@ function startup() {
     if (!savingStarted) {
         utils.loadBotData(state);
         utils.startAutoSave(state);
+        savingStarted = true
     }
     bot.loadPlugin(tpsPlugin);
 
@@ -267,6 +269,7 @@ function startup() {
 }
 
 startup();
+
 
 
 
