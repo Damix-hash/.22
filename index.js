@@ -7,6 +7,7 @@ const tpsPlugin = require('mineflayer-tps')(mineflayer);
 const utils = require('./util');
 const createCommands = require('./commands');
 const registerEvents = require('./events');
+let savingStarted = false
 
 function startup() {
     const PASSWORD = process.env.MC_PASSWORD;
@@ -255,8 +256,10 @@ function startup() {
 
     // Register event listeners with bot and state
     registerEvents(bot, state);
-    utils.loadBotData(state);
-    utils.startAutoSave(state);
+    if (!savingStarted) {
+        utils.loadBotData(state);
+        utils.startAutoSave(state);
+    }
     bot.loadPlugin(tpsPlugin);
 
     // Expose startup globally for reconnect on disconnect
@@ -264,6 +267,7 @@ function startup() {
 }
 
 startup();
+
 
 
 
