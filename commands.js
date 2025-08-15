@@ -46,7 +46,12 @@ const public_commands = {
 
     [`${prefix}kys`]: (user, message, bot, state) =>
         state.handleTargetCommand(user, prefix, message, bot, state, 'kys', '<username>', (user, target) => `Go kill yourself ${target}`),
-
+    
+ // Add the new -info command here:
+    [`${prefix}info`]: (user, message, bot, state) => {
+        bot.chat("I'm a Bot Created By Damix2131, ryk_cbaool and 1nvoke_. Try -help To Use My Commands. :D"),
+            
+    },
     [`${prefix}pp`]: (user, message, bot, state) =>
         state.handleTargetCommand(user, prefix, message, bot, state, 'pp', '<username>', (user, target) => {
             const size = "=".repeat(Math.floor(Math.random() * 50));
@@ -803,5 +808,6 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
+
 
 
