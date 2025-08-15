@@ -635,7 +635,7 @@ const public_commands = {
     },
 
     [`${prefix}discord`]: (user, message, bot, state) => {
-        bot.chat(state.safeChat(`Official discord server of .22 - https://discord.gg/mjrDsGCV7F`))
+        bot.chat(state.safeChat(`Official discord server of .22 - https://discord.gg/mjrDsGCV7F` and https://discord.gg/XQewB2WR))
     }    
 }
 
@@ -803,3 +803,4 @@ const admin_commands = {
 }
 
 module.exports = { public_commands, admin_commands };
+
