@@ -7,7 +7,7 @@ let startTime = Date.now();
 const spam_count = {};
 const temp_blacklist = new Map();
 const spam_offenses = {};
-const whitelist = ['Damix2131', 'q33a', 'ryk_cbaool',
+const whitelist = ['Damix2131', 'q33a', 'ryk_cbaool', '1nvoke_',
     'Abottomlesspit', 'MioAutoCrystal', 'NIKASTEIN'];
 
 async function updateUserLifetimeStats(username, state) {
@@ -297,4 +297,5 @@ module.exports = {
   spam_offenses,
   whitelist,
 };
+
 
