@@ -27,7 +27,7 @@ jobs:
 
       - name: Clone archive repo (restore previous data)
         run: |
-          git clone "https://x-access-token:${STORAGE_REPO_TOKEN}@github.com/Damix-hash/.22-archive.git" archive-repo
+          git clone "https://x-access-token:${STORAGE_REPO_TOKEN}@github.com/Damix-hash/%2E22-archive.git" archive-repo
           mkdir -p output
           cp -r archive-repo/output/* output/ || echo "No previous output files to restore"
 
