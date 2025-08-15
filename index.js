@@ -233,6 +233,10 @@ function startup() {
             "Check average ping across all players with -avgping!",
             "Check the current weather using -weather!",
             "See the current Minecraft time using -time!",
+            "Wanna Join Basses Join Exileon - https://discord.gg/XQewB2WR",
+            "Need Help In Escaping Spawn Join Exileon - https://discord.gg/XQewB2WR",
+            "Wanna Programme Bots Like me And have Fun Join Exileon - https://discord.gg/XQewB2WR",
+            "Wanna Know More about Me Try -info",
             "Say thanks to the bot with -discord!"
         ],
         blacklisted_messages: [
@@ -269,6 +273,7 @@ function startup() {
 }
 
 startup();
+
 
 
 
