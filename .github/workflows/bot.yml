@@ -25,6 +25,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Ensure STORAGE_REPO_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.STORAGE_REPO_TOKEN }}" ]; then
+            echo "❌ Error: STORAGE_REPO_TOKEN is not set"
+            exit 1
+          fi
+
       - name: Clone archive repo (restore previous data)
         run: |
           git clone "https://x-access-token:${{ secrets.STORAGE_REPO_TOKEN }}@github.com/Damix-hash/.22-archive.git" archive-repo
